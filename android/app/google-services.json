@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "909561501002",
+    "firebase_url": "https://shavishankmedapp.firebaseio.com",
+    "project_id": "shavishankmedapp",
+    "storage_bucket": "shavishankmedapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:909561501002:android:0a698f483fd59a988dddb3",
+        "android_client_info": {
+          "package_name": "com.example.shavishank"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "909561501002-8muj3l523jdcgu169nmgqqkotul2sb6q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDf1k5d8ks06Qq5EO8KUOHWeAi9MwuW1bg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "909561501002-8muj3l523jdcgu169nmgqqkotul2sb6q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
