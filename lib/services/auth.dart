@@ -29,16 +29,42 @@ class AuthService{
     print(e.toString());
     return null;
   }
-
-
-
 }
-//sign in with email and password
-//register
-//sign out
 
 
+  Future registerWithEmailPassword(String email , String password) async {                                     //register
+    try{
+      UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      User user = result.user;
+      return CustomUser(user.uid);
+    }
+    catch(e){
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Future signInWithEmailPassword(String email , String password) async {                                     //sign In
+    try{
+      UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      User user = result.user;
+      return CustomUser(user.uid);
+    }
+    catch(e){
+      print(e.toString());
+      return null;
+    }
+  }
 
 
+   Future signOut() async {                                     //sign out
+    try{
+      return await _auth.signOut();
+    }
+    catch(e){
+      print(e.toString());
+      return null;
+    }
+   }
 
 }
