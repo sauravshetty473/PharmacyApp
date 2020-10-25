@@ -9,24 +9,39 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  PageController _pageController = PageController(initialPage: 0);
+
+
+
+
   @override
   Widget build(BuildContext context) {
     final AuthService _auth = AuthService();
 
-    return Scaffold(
-      backgroundColor: Colors.grey[200],
-      appBar: AppBar(title: Text("Home Screen"), elevation: 0.0, backgroundColor: Colors.grey[500],
-      actions:<Widget> [
-        FlatButton.icon(icon: Icon(Icons.person) ,label: Text("log out"),
-        onPressed: () async{                    //async so that you do not freeze the whole app just because of this
-          _auth.signOut();
-        },
-        )
-
-        ],
-      ),
-
-
+    return PageView(
+      controller: _pageController,
+      physics: NeverScrollableScrollPhysics(),
+      children: [
+        Scaffold(
+          backgroundColor: Colors.white,
+          appBar: AppBar(centerTitle: true ,title: Text("Shavishank"), elevation: 0.0, backgroundColor: Colors.pinkAccent,
+            actions:<Widget> [
+              IconButton(
+                padding: EdgeInsets.all(0),
+                icon: Icon(Icons.shopping_cart),
+                onPressed: (){
+                },
+              ),
+              IconButton(
+                padding: EdgeInsets.all(0),
+                icon: Icon(Icons.search),
+                onPressed: (){
+                },
+              )
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
