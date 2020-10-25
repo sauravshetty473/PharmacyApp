@@ -38,6 +38,8 @@ class _LoginInfoSlideViewState extends State<LoginInfoSlideView> {
     });
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
