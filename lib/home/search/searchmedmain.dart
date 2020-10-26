@@ -2,19 +2,12 @@ import 'package:flutter/material.dart';
 
 
 class SearchMed extends StatelessWidget {
-  Function _goback;
-  SearchMed(this._goback);
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          highlightColor: Colors.transparent,
-          splashColor: Colors.transparent,
-          icon: Icon(Icons.keyboard_backspace),
-          onPressed: _goback,
-        ),
         elevation: 0.0,
         backgroundColor: Colors.pinkAccent,
       ),
