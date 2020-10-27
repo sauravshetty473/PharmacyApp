@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:shavishank/home/appdrawer.dart';
+import 'package:shavishank/home/productrelated/cart.dart';
+import 'package:shavishank/home/productrelated/productpage.dart';
 import 'package:shavishank/home/search/searchcards.dart';
 import 'package:shavishank/home/search/searchmedmain.dart';
 import 'package:shavishank/services/auth.dart';
@@ -42,9 +44,8 @@ class _HomeState extends State<Home> {
 
     return Scaffold(
             drawer: AppDrawer(),
-
-            backgroundColor: Colors.grey[200],
-            appBar: AppBar(centerTitle: true ,title: Text("Shavishank"), elevation: 0.0, backgroundColor: Colors.pinkAccent,
+            backgroundColor: Color.fromARGB(255, 21, 35, 55),
+            appBar: AppBar(centerTitle: true ,title: Text("Shavishank"), elevation: 0.0, backgroundColor: Color.fromARGB(255, 21, 35, 55),
 
               actions:<Widget> [
                 IconButton(
@@ -64,9 +65,9 @@ class _HomeState extends State<Home> {
                   padding: EdgeInsets.all(0),
                   icon: Icon(Icons.shopping_cart),
                   onPressed: (){
-
-
-
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => Cart(),
+                    ));
                   },
                 )
               ],
@@ -82,7 +83,7 @@ class _HomeState extends State<Home> {
                 Container(
                   width: double.infinity,
                   height: MediaQuery.of(context).size.height/15,
-                  color: Colors.pinkAccent,
+                  color: Color.fromARGB(255, 21, 35, 55),
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(5,5,5,5),
                     child: FlatButton.icon(
@@ -105,35 +106,46 @@ class _HomeState extends State<Home> {
                   ),
                 ),
 
+                SizedBox(
+                  height: 5,
+                ),
 
 
 
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5,vertical: 10),
-                  child: Column(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.fromLTRB(0,10,0,10),
 
-                        height: MediaQuery.of(context).size.height/4,
-                        child: PageView(
-                          onPageChanged: _onPageChanged,
-                          controller: _insidepageController,
-                          children: [
-                            Image(image: AssetImage("assets/images/thumb1.png"),),
-                            Image(image: AssetImage("assets/images/thumb1.png"),),
-                          ],
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.all(Radius.circular(10))
+                  ),
+
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5,vertical: 10),
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.fromLTRB(0,10,0,10),
+
+                          height: MediaQuery.of(context).size.height/4,
+                          child: PageView(
+                            onPageChanged: _onPageChanged,
+                            controller: _insidepageController,
+                            children: [
+                              Image(image: AssetImage("assets/images/thumb1.png"),),
+                              Image(image: AssetImage("assets/images/thumb1.png"),),
+                            ],
+                          ),
                         ),
-                      ),
 
 
 
-                      SearchPacks(title : "Popular products"),
-                      SearchPacks(title : "Top Selling products"),
-                      SearchPacks(title : "Seasonal products"),
-                      SearchPacks(title : "Today's hot deal"),
-                    ],
+                        SearchPacks(title : "Popular products"),
+                        SearchPacks(title : "Top Selling products"),
+                        SearchPacks(title : "Seasonal products"),
+                        SearchPacks(title : "Today's hot deal"),
+                      ],
 
+                    ),
                   ),
                 )
               ],

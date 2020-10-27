@@ -8,7 +8,7 @@ class FlipkartTextField extends StatefulWidget {
   final double shrinksize;
   final double expandsize;
   final number;
-  FlipkartTextField({this.hintext , this.duration , this.shrinkpad, this.expandpad,this.shrinksize,this.expandsize,this.number=false});
+  FlipkartTextField({this.hintext , this.duration =200, this.shrinkpad=10, this.expandpad=25,this.shrinksize=10,this.expandsize=15,this.number=false});
 
   @override
   _FlipkartTextFieldState createState() => _FlipkartTextFieldState();
@@ -41,11 +41,11 @@ class _FlipkartTextFieldState extends State<FlipkartTextField> {
               duration: Duration(milliseconds: 200),
               style: _tap?TextStyle(
                   color: Colors.blue,
-                  fontSize: widget.shrinksize!=null?widget.shrinksize:10,
+                  fontSize: widget.shrinksize,
               ):
               TextStyle(
                   color: Colors.black,
-                  fontSize: widget.expandsize!=null?widget.expandsize:15,
+                  fontSize: widget.expandsize,
               )
           ),
         ),

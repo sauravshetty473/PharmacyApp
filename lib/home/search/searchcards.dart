@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shavishank/home/productrelated/productcards.dart';
 
 
 
@@ -16,12 +17,14 @@ class SearchPacks extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
       ),
-      height: MediaQuery.of(context).size.height/4,
+      height: MediaQuery.of(context).size.height/3,
       
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.fromLTRB(8, 8 ,8 ,0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -53,6 +56,17 @@ class SearchPacks extends StatelessWidget {
                     },
                   ),
                 )
+              ],
+            ),
+          ),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                MainProductCard(),
+                MainProductCard(),
+                MainProductCard(),
+                MainProductCard(),
               ],
             ),
           )

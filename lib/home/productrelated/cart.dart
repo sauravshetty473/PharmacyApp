@@ -1,0 +1,287 @@
+import 'package:flutter/material.dart';
+
+class Cart extends StatefulWidget {
+  @override
+  _CartState createState() => _CartState();
+}
+
+class _CartState extends State<Cart> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        title: Text("My Cart"),
+      ),
+
+      backgroundColor: Colors.grey[200],
+
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              color: Colors.white,
+              padding: EdgeInsets.fromLTRB(10 , 20 ,10 , 10),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text("Deliver to ",
+                            style: TextStyle(
+                              fontSize: 15,
+                            ),),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Expanded(
+                              child: Text("Saurav Shetty , 421201",
+                                overflow: TextOverflow.fade,
+                                maxLines: 1,
+                                softWrap: false,
+                                style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              ),
+                            )
+
+                          ],
+                        ),
+                        SizedBox(height: 10
+
+                          ,),
+
+                        Container(
+                          child: Text("C-20 NavTrilok CHS , Shrikhandewadi , LaxmibaiNerurkar road , Dombivli East",
+                            overflow: TextOverflow.fade,
+                            maxLines: 1,
+                            softWrap: false,
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.grey
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+
+
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10,0,0,0),
+                    child: InkWell(
+                      onTap: () {
+
+                      },
+                      child: new Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 15 , vertical: 10),
+                        decoration: new BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                          border: Border.all(color: Colors.black.withAlpha(50)),
+                        ),
+                        child: new Text("Change", style: new TextStyle(color: Colors.blue, fontSize: 15.0 , fontWeight: FontWeight.w500)),
+                      ),//............
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 20,),
+            ProductInCart(
+
+            ),
+
+            SizedBox(height: 20,),
+            ProductInCart(
+
+            ),
+
+            SizedBox(height: 20,),
+            ProductInCart(
+
+            ),
+
+            SizedBox(height: 20,),
+            ProductInCart(
+
+            ),
+            
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+
+
+
+
+
+
+
+class ProductInCart extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height/3;
+
+    return Container(
+      height: height,
+      color: Colors.white,
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: Container(
+              height: height*2.2/3,
+              child: Column(
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                child: Text("Cadbury Bournvita Pro Health Vitamins  (200 g)",
+                                  overflow: TextOverflow.fade,
+                                  maxLines: 1,
+                                  softWrap: false,
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text("(200 g)",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.grey,
+
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        Flexible(
+                          child: Image(
+                            image: NetworkImage("https://rukminim1.flixcart.com/image/416/416/kdvzwcw0/milk-drink-mix/x/z/g/200-pro-health-vitamins-plastic-bottle-cadbury-bournvita-original-imafuzwyhpymmy6x.jpeg?q=70"),
+                          ),
+                        )
+
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Text("\u20B91000",
+                                  style: TextStyle(
+                                    fontSize: 20
+
+
+
+                                  ),
+                                ),
+                                SizedBox(width:10 ,),
+
+                                Text("\u20B92000",
+                                  style: TextStyle(
+                                    decoration: TextDecoration.lineThrough,
+                                    color: Colors.grey,
+
+
+
+                                  ),
+                                ),
+                              ],
+
+                            ),
+                            SizedBox(height:10 ,),
+                            Text("50% off",
+                              style: TextStyle(
+                                color: Colors.green
+
+
+
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        InkWell(
+                          onTap: () {
+
+                          },
+                          child: new Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 15 , vertical: 10),
+                            decoration: new BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(5)),
+                              border: Border.all(color: Colors.black.withAlpha(50)),
+                            ),
+                            child: new Text("Change", style: new TextStyle(color: Colors.blue, fontSize: 15.0 , fontWeight: FontWeight.w500)),
+                          ),//............
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Divider(
+            height: 0,
+            thickness: 2,
+          ),
+          Expanded(
+            flex: 1,
+            child: Row(
+              children: [
+                Expanded(
+                  child: FlatButton(
+                    child: Text("Save for later"),
+                    onPressed: (){
+
+                    },
+                  ),
+                ),
+                VerticalDivider(
+                  thickness: 2,
+                ),
+
+                Expanded(
+                  child: FlatButton(
+                    child: Text("Remove item"),
+                    onPressed: (){
+                    },
+                  ),
+                ),
+              ],
+            )
+          )
+        ],
+      ),
+    );
+  }
+}
