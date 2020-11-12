@@ -16,102 +16,164 @@ class _CartState extends State<Cart> {
 
       backgroundColor: Colors.grey[200],
 
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              color: Colors.white,
-              padding: EdgeInsets.fromLTRB(10 , 20 ,10 , 10),
-              child: Row(
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
                 children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                  Container(
+                    color: Colors.white,
+                    padding: EdgeInsets.fromLTRB(10 , 20 ,10 , 10),
+                    child: Row(
                       children: [
-                        Row(
-                          children: [
-                            Text("Deliver to ",
-                            style: TextStyle(
-                              fontSize: 15,
-                            ),),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Expanded(
-                              child: Text("Saurav Shetty , 421201",
-                                overflow: TextOverflow.fade,
-                                maxLines: 1,
-                                softWrap: false,
-                                style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Text("Deliver to ",
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                  ),),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Expanded(
+                                    child: Text("Saurav Shetty , 421201",
+                                      overflow: TextOverflow.fade,
+                                      maxLines: 1,
+                                      softWrap: false,
+                                      style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    ),
+                                  )
+
+                                ],
                               ),
-                              ),
-                            )
+                              SizedBox(height: 10
 
-                          ],
-                        ),
-                        SizedBox(height: 10
+                                ,),
 
-                          ,),
-
-                        Container(
-                          child: Text("C-20 NavTrilok CHS , Shrikhandewadi , LaxmibaiNerurkar road , Dombivli East",
-                            overflow: TextOverflow.fade,
-                            maxLines: 1,
-                            softWrap: false,
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.grey
-                            ),
+                              Container(
+                                child: Text("C-20 NavTrilok CHS , Shrikhandewadi , LaxmibaiNerurkar road , Dombivli East",
+                                  overflow: TextOverflow.fade,
+                                  maxLines: 1,
+                                  softWrap: false,
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.grey
+                                  ),
+                                ),
+                              )
+                            ],
                           ),
-                        )
+                        ),
+
+
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(10,0,0,0),
+                          child: InkWell(
+                            onTap: () {
+
+                            },
+                            child: new Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 15 , vertical: 10),
+                              decoration: new BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(5)),
+                                border: Border.all(color: Colors.black.withAlpha(50)),
+                              ),
+                              child: new Text("Change", style: new TextStyle(color: Colors.blue, fontSize: 15.0 , fontWeight: FontWeight.w500)),
+                            ),//............
+                          ),
+                        ),
                       ],
                     ),
                   ),
+                  SizedBox(height: 20,),
+                  ProductInCart(
 
-
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(10,0,0,0),
-                    child: InkWell(
-                      onTap: () {
-
-                      },
-                      child: new Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 15 , vertical: 10),
-                        decoration: new BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                          border: Border.all(color: Colors.black.withAlpha(50)),
-                        ),
-                        child: new Text("Change", style: new TextStyle(color: Colors.blue, fontSize: 15.0 , fontWeight: FontWeight.w500)),
-                      ),//............
-                    ),
                   ),
+
+                  SizedBox(height: 20,),
+                  ProductInCart(
+
+                  ),
+
+                  SizedBox(height: 20,),
+                  ProductInCart(
+
+                  ),
+
+                  SizedBox(height: 20,),
+                  ProductInCart(
+
+                  ),
+
                 ],
               ),
             ),
-            SizedBox(height: 20,),
-            ProductInCart(
+          ),
 
+
+
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black,
+                  blurRadius: 2.0,
+                  spreadRadius: 1.0,
+                  offset: Offset(2.0, 2.0), // shadow direction: bottom right
+                )
+              ],
             ),
 
-            SizedBox(height: 20,),
-            ProductInCart(
+            width: double.infinity,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("\u20B92000"),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10  ,vertical: 10),
+                  child: Container(
+                    decoration : BoxDecoration(
+                      color: Color.fromARGB(255, 21, 35, 55),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(5)
+                      ),
 
+                    ),
+
+                    child: FlatButton(
+                      padding: EdgeInsets.symmetric(horizontal: 50,vertical:0),
+                      onPressed: (){
+                      },
+
+                      child: Text("Place Order",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+
+
+
+                      ),
+                    ),
+                  ),
+                )
+
+
+
+              ],
             ),
+          )
 
-            SizedBox(height: 20,),
-            ProductInCart(
-
-            ),
-
-            SizedBox(height: 20,),
-            ProductInCart(
-
-            ),
-            
-          ],
-        ),
+        ],
       ),
     );
   }

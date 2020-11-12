@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shavishank/home/productrelated/productcards.dart';
+import 'package:shavishank/services/database.dart';
 
 
 
@@ -7,10 +10,14 @@ import 'package:shavishank/home/productrelated/productcards.dart';
 class SearchPacks extends StatelessWidget {
   final String title;
   SearchPacks({this.title});
-  
-  
+
+
   @override
   Widget build(BuildContext context) {
+    final list = Provider.of<QuerySnapshot>(context);
+
+
+
     return Container(
       margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
       decoration: BoxDecoration(
@@ -18,7 +25,7 @@ class SearchPacks extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       height: MediaQuery.of(context).size.height/3,
-      
+
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
@@ -34,7 +41,7 @@ class SearchPacks extends StatelessWidget {
                     Text("EXPLORE",
                     style: TextStyle(fontSize: 12),),
                     SizedBox(height: 10,),
-                    Text(title,
+                    Text(this.title,
                     style: TextStyle(fontSize: 15,
                       fontWeight: FontWeight.bold
 
@@ -62,12 +69,7 @@ class SearchPacks extends StatelessWidget {
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
-              children: [
-                MainProductCard(),
-                MainProductCard(),
-                MainProductCard(),
-                MainProductCard(),
-              ],
+             children: list!=null?list.docs.map((e) => MainProductCard(Product(e))).toList():[MainProductLoading(),MainProductLoading(),MainProductLoading(),MainProductLoading(),MainProductLoading(),],
             ),
           )
         ],
@@ -75,3 +77,6 @@ class SearchPacks extends StatelessWidget {
     );
   }
 }
+
+
+

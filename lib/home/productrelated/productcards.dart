@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:shavishank/home/productrelated/productpage.dart';
+import 'package:shavishank/services/database.dart';
 
 
 
 class MainProductCard extends StatelessWidget {
-
-
+  Product product;
+  MainProductCard( this.product);
 
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height/4.5;
-
-
     return Padding(
       padding: const EdgeInsets.fromLTRB(8,0,8,8),
       child: Card(
@@ -28,14 +27,14 @@ class MainProductCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Image(
-                  image: NetworkImage("https://rukminim1.flixcart.com/image/416/416/kdvzwcw0/milk-drink-mix/x/z/g/200-pro-health-vitamins-plastic-bottle-cadbury-bournvita-original-imafuzwyhpymmy6x.jpeg?q=70"),
+                  image: NetworkImage(product.imageUrl),
                 ),
               ),
 
               FlatButton(
                 onPressed: (){
                   Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => ProductPage(),
+                    builder: (context) => ProductPage(product),
                   ));
                 },
                 child: Container(
@@ -45,12 +44,6 @@ class MainProductCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
 
-                      /*Divider(
-                        thickness: 1,
-                        height: 0,
-                      ),*/
-
-
                       SizedBox(
                         height: 5,
                       ),
@@ -59,7 +52,7 @@ class MainProductCard extends StatelessWidget {
                       Container(
 
                           child :Text(
-                            "This is a sample long text line we are using in our example.",
+                            product.name,
                             style: TextStyle(fontSize: 13),
                             overflow: TextOverflow.fade,
                             textAlign: TextAlign.center,
@@ -70,7 +63,7 @@ class MainProductCard extends StatelessWidget {
 
                       Row(
                         children: [
-                          Text("\u20B9200",
+                          Text("\u20B9"+product.myprice.toString(),
                             style: TextStyle(
                               fontWeight: FontWeight.w500
                             ),
@@ -79,7 +72,7 @@ class MainProductCard extends StatelessWidget {
                           SizedBox(
                             width: 5,
                           ),
-                          Text("\u20B9300",
+                          Text("\u20B9"+product.price.toString(),
                             style: TextStyle(
                                 color: Colors.grey,
                                 decoration: TextDecoration.lineThrough
@@ -90,23 +83,15 @@ class MainProductCard extends StatelessWidget {
 
                       SizedBox(height: 3,),
 
-                      Text("\u20B9300 off",
+                      Text("\u20B9"+(product.price-product.myprice).toString(),
                         style: TextStyle(
                             color: Colors.green,
                         ),
                       ),
-
-
-
-
                     ],
                   ),
                 ),
               )
-
-
-
-
             ],
           ),
         ),
@@ -114,6 +99,75 @@ class MainProductCard extends StatelessWidget {
     );
   }
 }
+
+
+
+class MainProductLoading extends StatefulWidget {
+  @override
+  _MainProductLoadingState createState() => _MainProductLoadingState();
+}
+
+class _MainProductLoadingState extends State<MainProductLoading> with SingleTickerProviderStateMixin {
+  AnimationController _controller;
+  Animation<Color> anim1;
+  Animation<Color> anim2;
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: Duration(seconds: 3),
+      vsync: this);
+
+    anim1 = ColorTween(begin: Colors.grey , end: Colors.grey[100]).animate(_controller);
+    anim2 = ColorTween(begin: Colors.grey[100] , end: Colors.grey).animate(_controller);
+
+    _controller.forward();
+    _controller.addListener(() {
+      if(_controller.status ==AnimationStatus.completed ){
+
+        _controller.reverse();
+
+      }else if(_controller.status == AnimationStatus.dismissed){
+        _controller.forward();
+      }
+      this.setState(() {                          //after each listening events setstate// inshort whenever controller changes value the addlistener function is executed
+      });
+    });
+
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height/4.5;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(8,0,8,8),
+      child: Card(
+        child: ShaderMask(
+          shaderCallback: (rect){
+            return LinearGradient(colors: [anim1.value ,anim2.value] ).createShader(rect);
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(5)),
+            ),
+            width: height*2/3,
+            height: height ,
+          ),
+        )));
+  }
+}
+
+
 
 
 class ProductSearchCard extends StatelessWidget {

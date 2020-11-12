@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:shavishank/services/database.dart';
 
 
 class ProductPage extends StatefulWidget {
+  Product product;
+  ProductPage(this.product);
+
   @override
   _ProductPageState createState() => _ProductPageState();
 }
@@ -30,7 +34,7 @@ class _ProductPageState extends State<ProductPage> {
                       Container(
                         height: MediaQuery.of(context).size.height/2,
                         child: Image(
-                          image: NetworkImage("https://5.imimg.com/data5/SE/LV/MY-62472202/cadbury-bournvita-chocolate-health-drink-2c-1kg-jar-500x500.png"),
+                          image: NetworkImage(widget.product.imageUrl),
                         ),
                       ),
                       Container(
@@ -38,13 +42,13 @@ class _ProductPageState extends State<ProductPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Bournvita Pro Health drink chocolate",
+                            Text(widget.product.name,
                             style: TextStyle(
                               fontSize: 20
                               ),
                             ),
                             SizedBox(height: 10,),
-                            Text("jar of 1kg powder"),
+                            Text(widget.product.subinfo),
                             SizedBox(height: 20,),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -60,7 +64,6 @@ class _ProductPageState extends State<ProductPage> {
                                       ),
                                     ),
                                     SizedBox(height: 10,),
-                                    Text("Mfg. Mondelez India Foods Ltd."),
                                     SizedBox(height: 10,),
 
                                     Row(
@@ -116,12 +119,9 @@ class _ProductPageState extends State<ProductPage> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    Text("Rs 361.0",
+                                    Text(widget.product.myprice.toString(),
                                       style: TextStyle(
                                         fontSize: 20
-
-
-
                                       ),
                                     ),
 
@@ -129,10 +129,8 @@ class _ProductPageState extends State<ProductPage> {
 
                                     Row(
                                       children: [
-                                        Text("5% OFF",
+                                        Text((((widget.product.price - widget.product.myprice)*100/widget.product.price)).toStringAsFixed(0)+"% off",
                                           style: TextStyle(
-
-
                                           ),
                                         ),
 
@@ -140,7 +138,7 @@ class _ProductPageState extends State<ProductPage> {
                                           width: 10,
 
                                         ),
-                                        Text("Rs 380.00",
+                                        Text(widget.product.price.toString(),
                                           style: TextStyle(
                                               decoration: TextDecoration.lineThrough)
                                           ),
@@ -169,13 +167,10 @@ class _ProductPageState extends State<ProductPage> {
                           ],
                         ),
                       )
-
-
                     ],
                   ),
                 ),
               ),
-
 
               Card(             //description
                 child: Padding(
@@ -183,8 +178,7 @@ class _ProductPageState extends State<ProductPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Cadbury is a delicious chocolate health drink which is enriched with vitamin (d, b2, b9, b12). It combines the great taste of chocolate, and goodness of essential nutrients that aid growth and development. Bournvita is a malted chocolate drink mix that can be enjoyed piping hot or deliciously cold. Try blending bournvita with milk and ice cream to make a chocolate milkshake that is delectable and nutritious.",)
-
+                       Text(widget.product.description),
                     ],
                   ),
                 ),

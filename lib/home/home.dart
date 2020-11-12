@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shavishank/home/appdrawer.dart';
 import 'package:shavishank/home/productrelated/cart.dart';
 import 'package:shavishank/home/productrelated/productpage.dart';
@@ -39,6 +41,8 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+
+
 
     final AuthService _auth = AuthService();
 
