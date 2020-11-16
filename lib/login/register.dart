@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shavishank/services/auth.dart';
 import 'package:shavishank/shared/constants.dart';
 import 'package:shavishank/shared/loadingscreen.dart';
@@ -31,9 +32,10 @@ class _RegisterState extends State<Register> {
           color: Colors.white,
           height: MediaQuery.of(context).size.height,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
 
             children: [
-              SizedBox(height: MediaQuery.of(context).size.height/10,),
+              SizedBox(height: MediaQuery.of(context).size.height/5,),
               Expanded(
                 flex: 1,
                 child: Padding(
@@ -43,35 +45,8 @@ class _RegisterState extends State<Register> {
                       flex: 2,
                       child: Column(
                         children: [
-                          Expanded(child: Center(child: Text("Already have an Account?" , style: TextStyle(fontSize: 20),))),
-                          Expanded(child: Center(child: Text("or")),),
-                          Expanded(
-                            child: Center(
-                              child: FlatButton(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(100)),
-                                ),
-                                color: Colors.blue,
-                                child: Text("Skip Login" , style: TextStyle(color: Colors.white),),
-                                onPressed: () async{
-                                  setState(() {
-                                    loading = true;
-                                  });
-                                  dynamic result =await _auth.signInAnon();
-                                  if(result==null)
-                                  {
-                                    setState(() {
-                                      print("an error occurred");
-                                      loading =false;
-                                    });
-                                  }
-                                  else{
-                                    Navigator.pop(context);
-                                  }
-                                },
-                              ),
-                            ),
-                          )
+                          Expanded(child: Center(child: Text("Register your account" , style: TextStyle(fontSize: 20),))),
+
                         ],
                       ), //child: Text("Already have an Account?" , style: TextStyle(fontSize: 20),),
                     ),
@@ -81,7 +56,7 @@ class _RegisterState extends State<Register> {
                       Expanded(
                         flex: 3,
                         child: Image(
-                          image: AssetImage("assets/images/loginnew.png"),
+                           image: AssetImage("assets/images/register.png"),
                         ),
                       ),
 
@@ -92,83 +67,109 @@ class _RegisterState extends State<Register> {
               ),
 
               Expanded(
-                flex: 3,
+                flex: 1 ,
                 child: SingleChildScrollView(
-                  child: Container(
-                    child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 50 ,vertical: 20),
-                        child: Form(
-                          key: _formkey,
-                          child: Column(
-                            children: [
-                              SizedBox(height: 20,),
-                              TextFormField(
-                                decoration: idHintText("Enter your email"),
-                                validator: (val)=> val.isEmpty? "Enter an email":null,
-                                onChanged: (value){
-                                  setState(() {
-                                    _formkey.currentState.validate();
-                                    email = value;
-                                  });
+                  child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 50 ,vertical: 20),
+                      child: Form(
+                        key: _formkey,
+                        child: Column(
+                          children: [
+                            SizedBox(height: 20,),
+                            TextFormField(
+                              decoration: idHintText("Enter your email"),
+                              validator: (val)=> val.isEmpty? "Enter an email":null,
+                              onChanged: (value){
+                                setState(() {
+                                  _formkey.currentState.validate();
+                                  email = value;
+                                });
 
-                                },
-                              ),
+                              },
+                            ),
 
-                              SizedBox(height: 20,),
-                              TextFormField(
-                                decoration: textInputDecoration.copyWith(hintText: "password"),          //copy all the content in the predefined constant and add my own hintText
-                                validator: (val)=> val.length<6?"Enter at least a 6 character password":null,
-                                obscureText: true,
-                                onChanged: (value){
-                                  setState(() {
-                                    _formkey.currentState.validate();
-                                    password = value;
-                                  });
-                                },
-                              ),
-                              SizedBox(height: 20,),
+                            SizedBox(height: 20,),
+                            TextFormField(
+                              decoration: textInputDecoration.copyWith(hintText: "password"),          //copy all the content in the predefined constant and add my own hintText
+                              validator: (val)=> val.length<6?"Enter at least a 6 character password":null,
+                              obscureText: true,
+                              onChanged: (value){
+                                setState(() {
+                                  _formkey.currentState.validate();
+                                  password = value;
+                                });
+                              },
+                            ),
+                            SizedBox(height: 20,),
 
-                              RaisedButton(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(100)),
-                                ),
-                                color: Colors.grey[500],
-                                child: Container(
-                                    margin: EdgeInsets.all(10),
-                                    width: MediaQuery.of(context).size.width*2/5,
-                                    child: Center(child: Text("Login", style: TextStyle(color: Colors.white ,fontSize: 20),))),
-                                onPressed: () async{
-                                  if(_formkey.currentState.validate())            //true when both helper strings return null
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                RaisedButton(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(100)),
+                                  ),
+                                  color: Colors.grey[500],
+                                  child: Container(
+                                      margin: EdgeInsets.all(10),
+                                      width: MediaQuery.of(context).size.width*1/5,
+                                      child: Center(child: Text("Register", style: TextStyle(color: Colors.white ,fontSize: 20),))),
+                                  onPressed: () async{
+                                    if(_formkey.currentState.validate())            //true when both helper strings return null
+                                        {
+                                      setState(() {
+                                        loading =true;
+                                      });
+                                      dynamic result =await _auth.registerWithEmailPassword(email, password);
+                                      print(result);
+                                      if(result==null)
                                       {
+                                        setState(() {
+
+                                          loading =false;
+                                        });
+                                      }
+                                      else
+                                      {
+
+                                        Navigator.pop(context);
+                                      }
+                                    }
+                                  },
+                                ),
+
+                                FlatButton(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(100)),
+                                  ),
+                                  color: Colors.blue,
+                                  child: Text("Skip Login" , style: TextStyle(color: Colors.white),),
+                                  onPressed: () async{
                                     setState(() {
-                                      loading =true;
+                                      loading = true;
                                     });
-                                    dynamic result =await _auth.signInWithEmailPassword(email, password);
+                                    dynamic result =await _auth.signInAnon();
                                     if(result==null)
                                     {
                                       setState(() {
-                                        error ="password and email do not match";
+                                        print("an error occurred");
                                         loading =false;
                                       });
                                     }
-                                    else
-                                    {
+                                    else{
                                       Navigator.pop(context);
                                     }
-                                  }
-                                },
-                              ),
-                              /*SizedBox(
-                            child: Text(error),
-                          )*/
-                              FlatButton(
-                                  child: Text("New user? Create Account", style: TextStyle(fontSize: 13 , color: Colors.blue[700]),),
-                                  onPressed: widget.toggleView
-                              )
-                            ],
-                          ),
-                        )
-                    ),
+                                  },
+                                ),
+                              ],
+                            ),
+                            FlatButton(
+                                child: Text("Log in with existing account", style: TextStyle(fontSize: 13 , color: Colors.blue[700]),),
+                                onPressed: widget.toggleView
+                            )
+                          ],
+                        ),
+                      )
                   ),
                 ),
               ),

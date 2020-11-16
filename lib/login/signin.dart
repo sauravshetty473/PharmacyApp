@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shavishank/services/auth.dart';
 import 'package:shavishank/shared/constants.dart';
 import 'package:shavishank/shared/loadingscreen.dart';
@@ -32,6 +33,7 @@ class _SignInState extends State<SignIn> {
         color: Colors.white,
         height: MediaQuery.of(context).size.height,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
 
           children: [
             SizedBox(height: MediaQuery.of(context).size.height/5,),
@@ -55,34 +57,6 @@ class _SignInState extends State<SignIn> {
                       child: Column(
                         children: [
                           Expanded(child: Center(child: Text("Already have an Account?" , style: TextStyle(fontSize: 20),))),
-                          Expanded(child: Center(child: Text("or")),),
-                          Expanded(
-                            child: Center(
-                              child: FlatButton(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(100)),
-                                ),
-                                color: Colors.blue,
-                                child: Text("Skip Login" , style: TextStyle(color: Colors.white),),
-                                onPressed: () async{
-                                  setState(() {
-                                    loading = true;
-                                  });
-                                  dynamic result =await _auth.signInAnon();
-                                  if(result==null)
-                                    {
-                                      setState(() {
-                                        print("an error occurred");
-                                        loading =false;
-                                      });
-                                    }
-                                  else{
-                                    Navigator.pop(context);
-                                  }
-                                },
-                              ),
-                            ),
-                          )
                         ],
                       ), //child: Text("Already have an Account?" , style: TextStyle(fontSize: 20),),
                     )
@@ -128,35 +102,74 @@ class _SignInState extends State<SignIn> {
                             ),
                             SizedBox(height: 20,),
 
-                            RaisedButton(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(100)),
-                              ),
-                              color: Colors.grey[500],
-                              child: Container(
-                                  margin: EdgeInsets.all(10),
-                                  width: MediaQuery.of(context).size.width*2/5,
-                                  child: Center(child: Text("Login", style: TextStyle(color: Colors.white ,fontSize: 20),))),
-                              onPressed: () async{
-                                if(_formkey.currentState.validate())            //true when both helper strings return null
-                                    {
-                                  setState(() {
-                                    loading =true;
-                                  });
-                                  dynamic result =await _auth.signInWithEmailPassword(email, password);
-                                  if(result==null)
-                                  {
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                RaisedButton(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(100)),
+                                  ),
+                                  color: Colors.grey[500],
+                                  child: Container(
+                                      margin: EdgeInsets.all(10),
+                                      width: MediaQuery.of(context).size.width*1/5,
+                                      child: Center(child: Text("Login", style: TextStyle(color: Colors.white ,fontSize: 20),))),
+                                  onPressed: () async{
+                                    if(_formkey.currentState.validate())            //true when both helper strings return null
+                                        {
+                                      setState(() {
+                                        loading =true;
+                                      });
+                                      dynamic result =await _auth.signInWithEmailPassword(email, password);
+                                      if(result==null)
+                                      {
+                                        setState(() {
+                                          error ="password and email do not match";
+                                          loading =false;
+                                        });
+                                      }
+                                      else
+                                        {
+                                          if(result.isverified){
+                                            Navigator.pop(context);
+                                          }
+                                          else{
+                                            Fluttertoast.showToast(msg: "The email is not verified");
+                                            setState(() {
+                                              loading =false;
+                                            });
+
+                                          }
+                                        }
+                                    }
+                                  },
+                                ),
+
+                                FlatButton(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(100)),
+                                  ),
+                                  color: Colors.blue,
+                                  child: Text("Skip Login" , style: TextStyle(color: Colors.white),),
+                                  onPressed: () async{
                                     setState(() {
-                                      error ="password and email do not match";
-                                      loading =false;
+                                      loading = true;
                                     });
-                                  }
-                                  else
+                                    dynamic result =await _auth.signInAnon();
+                                    if(result==null)
                                     {
+                                      setState(() {
+                                        print("an error occurred");
+                                        loading =false;
+                                      });
+                                    }
+                                    else{
                                       Navigator.pop(context);
                                     }
-                                }
-                              },
+                                  },
+                                ),
+
+                              ],
                             ),
                             /*SizedBox(
                             child: Text(error),

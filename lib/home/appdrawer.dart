@@ -1,12 +1,23 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shavishank/home/productrelated/cartanon.dart';
 import 'package:shavishank/home/profile/profile.dart';
+import 'package:shavishank/home/profile/separateanonymous.dart';
+import 'package:shavishank/models/fillingclasses.dart';
+import 'package:shavishank/models/user.dart';
+import 'package:shavishank/services/database.dart';
 import 'package:shavishank/shared/buttons.dart';
+import 'package:shavishank/shared/getdata.dart';
 
 
 
-class AppDrawer extends StatelessWidget {
+class AppDrawer extends StatefulWidget {
+  @override
+  _AppDrawerState createState() => _AppDrawerState();
+}
+
+class _AppDrawerState extends State<AppDrawer> {
 
 
 
@@ -31,17 +42,26 @@ class AppDrawer extends StatelessWidget {
                 ),
               ),
 
-              AppDrawerFlatButton(
-                name: "Profile",
-                pushwidget: ProfilePage(),
+              FlatButton(
+                child: Text("Profile"),
+                onPressed: () async{
+                  NamePage newclass = await getdata(context);
+                  await Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => SeparateAnon(newpage: newclass)));
+                 },
               ),
+
               Divider(
                 height: 0,
                 thickness: 1
               ),
-              AppDrawerFlatButton(
-                name: "All Categories",
-                pushwidget: ProfilePage(),
+              FlatButton(
+                child: Text("Cart"),
+                onPressed: () async{
+                  NamePage newclass = await getdata(context);
+                  await Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => CartAnon(newclass)));
+                },
               ),
               AppDrawerFlatButton(
                 name: "My Orders",

@@ -1,19 +1,63 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shavishank/home/profile/address.dart';
 import 'package:shavishank/home/profile/namephone.dart';
+import 'package:shavishank/models/fillingclasses.dart';
+import 'package:shavishank/models/user.dart';
 import 'package:shavishank/services/database.dart';
 
 
 
 class ProfilePage extends StatefulWidget {
+  NamePage newpage;
+  Function setpre;
+  ProfilePage({this.newpage,this.setpre});
+
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+ String name;
+ String phonenumber;
 
+  void setsta(NamePage namepage){
+    this.setState(() {
+      widget.newpage = namepage;
+      widget.setpre(namepage);
+    });
+  }
   bool _ismale;
+
+
+ Widget rowModifier(bool ismale){
+   return ismale==null?Row(
+     mainAxisAlignment: MainAxisAlignment.center,
+     crossAxisAlignment: CrossAxisAlignment.center,
+
+     children: [
+       Gender(male: true,imageURL:"assets/images/male.png"),
+       Container(
+         child: Center(
+             child: Text("or",
+               style: TextStyle(color: Colors.white),
+
+             )),
+       ),
+       Gender(male: false,imageURL:"assets/images/female.png"),
+     ],
+   ):Row(
+     mainAxisAlignment: MainAxisAlignment.center,
+     crossAxisAlignment: CrossAxisAlignment.center,
+
+     children: [
+       ismale==true?Gender(male: true,imageURL:"assets/images/male.png"):Gender(male: false,imageURL:"assets/images/female.png"),
+     ],
+   );
+ }
+
+
 
   Widget Gender({bool male, String imageURL}){
     return FlatButton(
@@ -23,7 +67,7 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           CircleAvatar(
             radius: MediaQuery.of(context).size.width/10,
-            backgroundColor: _ismale!=null&&_ismale==male?Colors.grey[800]:Colors.transparent,
+            backgroundColor: _ismale!=null&&_ismale==male?Colors.black.withAlpha(100):Colors.transparent,
           ),
           CircleAvatar(
             radius: MediaQuery.of(context).size.width/12,
@@ -69,7 +113,7 @@ class _ProfilePageState extends State<ProfilePage> {
               alignment: Alignment.centerRight,
               child: FlatButton(
                 child: Text(butName),
-                onPressed: (){
+                onPressed: () {
                   if(widget!=null)
                     {
                       Navigator.push(context, MaterialPageRoute(
@@ -85,10 +129,21 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  @override
+  void initState() {
+    this.name = widget.newpage.firstname + " " +widget.newpage.lastname;
+    this.phonenumber = widget.newpage.phonenumber;
+    this._ismale = widget.newpage.ismale;
+    super.initState();
+  }
 
 
   @override
   Widget build(BuildContext context) {
+
+   _ismale = widget.newpage.ismale;
+
+
 
     return Scaffold(
       backgroundColor: Colors.grey[200],
@@ -108,7 +163,6 @@ class _ProfilePageState extends State<ProfilePage> {
               Navigator.push(context, MaterialPageRoute(
                 builder: (context) => NamePhone(),
               ));
-
             },
           ),
           IconButton(
@@ -129,37 +183,20 @@ class _ProfilePageState extends State<ProfilePage> {
             Container(color: Colors.blue,
               child: Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-
-                    children: [
-                      Gender(male: true,imageURL:"assets/images/male.png"),
-                      Container(
-                        child: Center(
-                            child: Text("or",
-                              style: TextStyle(color: Colors.white),
-
-                            )),
-                      ),
-                      Gender(male: false,imageURL:"assets/images/female.png"),
-                    ],
-                  ),
-
+                  rowModifier(_ismale),
 
                   FlatButton(
-                    child: Text("Enter Full Name" ,
+                    child: Text(widget.newpage.firstname==""?"Enter your Name":widget.newpage.firstname + " " + widget.newpage.lastname ,
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         color:Colors.white.withAlpha(100),
                         textBaseline: TextBaseline.ideographic),),
 
-                    onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => NamePhone(),
+                    onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => NamePhone(newclass: widget.newpage,setprevious:setsta),
                       ));
                     },
-
                   ),
                   Divider(
                     indent: 50,
@@ -168,8 +205,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     thickness: 1,
                     color: Colors.white.withAlpha(100),
                   ),
-                  Text("9004327955",
-                    style: TextStyle(fontSize: 10,color: Colors.white),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(widget.newpage.phonenumber??"phonenumber",
+                      style: TextStyle(fontSize: 10,color: Colors.white),
+                    ),
                   ),
                   SizedBox(
                     height: 10,
@@ -177,16 +217,15 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
             ),
-            
-            
+
             Padding(
               padding: EdgeInsets.all(5),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   ProfileCards(title: "My Orders", butName: "VIEW ALL ORDERS" , subtitle: ""),
-                  ProfileCards(title: "My Reviews", butName: "VIEW YOUR REVIEWS", subtitle: ""),
-                  ProfileCards(title: "My Addresses", butName: "VIEW MORE" , subtitle: "C-20, NavTrilok CHS ,Kalyan ,Maharashtra, 421201",widget: AddressPage()),
+                 // ProfileCards(title: "My Reviews", butName: "VIEW YOUR REVIEWS", subtitle: ""),
+                  ProfileCards(title: "My Addresses", butName: "VIEW MORE" , subtitle:widget.newpage.housename==""?"Add an address": widget.newpage.housename +","+widget.newpage.roadname +","+widget.newpage.city +","+widget.newpage.state +",",widget: AddressPage(addressPage: widget.newpage,setprevious: setsta,)),
                 ],
               ),
             ),
@@ -198,23 +237,11 @@ class _ProfilePageState extends State<ProfilePage> {
                 await FirebaseAuth.instance.signOut();
                 Navigator.pop(context);
               },
-
             )
-            
           ],
         ),
       )
-
-
-
-
-
-
-
-
-
     );
   }
 }
-
 

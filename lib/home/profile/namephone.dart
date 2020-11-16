@@ -1,17 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shavishank/models/fillingclasses.dart';
+import 'package:shavishank/models/user.dart';
+import 'package:shavishank/services/database.dart';
 import 'package:shavishank/shared/textformfield.dart';
 
-
+typedef void StringCallback(String id);
 
 class NamePhone extends StatefulWidget {
+  NamePage newclass;
+  Function setprevious;
+  NamePhone({this.newclass,this.setprevious});
+
   @override
   _NamePhoneState createState() => _NamePhoneState();
 }
 
 class _NamePhoneState extends State<NamePhone> {
 
+  String NPY = "";
+
+
   bool _tap=false;
   bool _ismale;
+  String firstname;
+  String lastname;
+  String phonenumber;
+  String emailaddress;
+
+  String getmale;
+  String getfname;
+  String getlname;
+  String getnumber;
+
+
+
+
 
   Widget Gender({bool male, String imageURL}){
     return FlatButton(
@@ -39,17 +63,78 @@ class _NamePhoneState extends State<NamePhone> {
           } else {
             _ismale = false;
           }
+          print(this._ismale);
         });
       },
     );
   }
 
+  @override
+  void initState() {
+    _ismale = widget.newclass.ismale;
+    firstname = widget.newclass.firstname;
+    lastname = widget.newclass.lastname;
+    phonenumber = widget.newclass.phonenumber;
+
+    super.initState();
+  }
+
+  void savedata() async{
+
+    //await getdata();
+    final user =  Provider.of<CustomUser>(context,listen: false);
+    await DatabaseService().Userdata.doc(user.uid).update({
+      "Firstname" : firstname??NPY,
+      "Lastname"  : lastname??NPY,
+      "Phone"     :phonenumber??NPY,
+      "EmailId"   : user.emailid??NPY,
+      "Gender"    :NPY,
+    });
+    if(_ismale!=null){
+      print(_ismale);
+      DatabaseService().Userdata.doc(user.uid).update({
+        "Gender" : _ismale?"male":"female",
+      });
+    }
+  }
+
+
+  void getdata() async{
+    final user =  Provider.of<CustomUser>(context,listen: false);
+      await DatabaseService().Userdata.doc(user.uid).get().then((value){                //returns map
+      try{
+
+        firstname = firstname??value["Firstname"];
+        lastname = lastname?? value["Lastname"];
+        phonenumber =phonenumber?? value["Phone"];
+        getmale  =getmale?? value["Gender"];
+        if(!(getmale==NPY)){
+          _ismale = getmale=="male"?true:false;
+        }
+      }
+      catch(e){               //if the keys are not present the nmake my own
+        print("problematic");
+          DatabaseService().Userdata.doc(user.uid).update({
+          "Firstname" :"",
+          "Lastname"  :"",
+          "Phone"     :"",
+          "Gender"    :"",
+        });}
+      });
+  }
 
 
 
 
   @override
   Widget build(BuildContext context) {
+
+
+
+
+
+
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -104,8 +189,16 @@ class _NamePhoneState extends State<NamePhone> {
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
-                    FlipkartTextField(
-                      hintext: "First name",
+                      FlipkartTextField(
+                        onSonChanged: (String newId) {
+                          setState(() {
+                            this.firstname = newId??this.firstname;
+                            widget.newclass.firstname = this.firstname;
+
+                          });
+                         },
+                      hintext: "First Name",
+                        initialvalue: firstname==""?null:firstname,
                       duration: 200,
                       shrinkpad: 10,
                       expandpad: 25,
@@ -115,30 +208,33 @@ class _NamePhoneState extends State<NamePhone> {
                     SizedBox(height: 10,),
 
                     FlipkartTextField(
-                      hintext: "Last Name",
-                      duration: 200,
-                      shrinkpad: 10,
-                      expandpad: 25,
-                      shrinksize: 10,
-                      expandsize: 15,
-                    ),
-                    SizedBox(height: 20,),
+                      onSonChanged: (String newId) {
+                       setState(() {
+                         this.lastname = newId??this.lastname;
+                         widget.newclass.lastname = this.lastname;
 
-                    FlatButton(
-                      child: Text("SUBMIT",
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.blue
-                      ),
-                      ),
-                      onPressed: (){
-
-
+                       });
                       },
+                      hintext: "Last Name",
+                      initialvalue: lastname==""?null:lastname,
+                      duration: 200,
+                      shrinkpad: 10,
+                      expandpad: 25,
+                      shrinksize: 10,
+                      expandsize: 15,
                     ),
+
                     SizedBox(height: 10,),
 
                     FlipkartTextField(
+                      onSonChanged: (String newId) {
+                        setState(() {
+                          this.phonenumber = newId??this.phonenumber;
+                          widget.newclass.phonenumber = this.phonenumber;
+
+                        });
+                      },
+                      initialvalue: phonenumber==""?null:phonenumber,
                       hintext: "Phone Number",
                       duration: 200,
                       shrinkpad: 10,
@@ -147,24 +243,23 @@ class _NamePhoneState extends State<NamePhone> {
                       expandsize: 15,
                       number: true,
                     ),
+                    SizedBox(height: 20,),
 
-                    SizedBox(height: 10,),
-
-                    FlipkartTextField(
-                      hintext: "Email id",
-                      duration: 200,
-                      shrinkpad: 10,
-                      expandpad: 25,
-                      shrinksize: 10,
-                      expandsize: 15,
+                    FlatButton(
+                      child: Text("SUBMIT",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.blue
+                        ),
+                      ),
+                      onPressed: () async{
+                        await savedata();
+                        widget.newclass.ismale = this._ismale;
+                        Navigator.pop(context);
+                        widget.setprevious(widget.newclass);
+                      },
                     ),
-
                   ],
-
-
-
-
-
                 ),
               )
             ],

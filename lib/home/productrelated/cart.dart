@@ -1,11 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:shavishank/home/profile/profile.dart';
+import 'package:shavishank/models/fillingclasses.dart';
 
 class Cart extends StatefulWidget {
+  NamePage namePage;
+  Cart(this.namePage);
   @override
   _CartState createState() => _CartState();
 }
 
 class _CartState extends State<Cart> {
+
+  void setpre(newpage){
+    this.setState(() {
+      widget.namePage = newpage;
+    });
+  }
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +55,7 @@ class _CartState extends State<Cart> {
                                     width: 20,
                                   ),
                                   Expanded(
-                                    child: Text("Saurav Shetty , 421201",
+                                    child: Text(widget.namePage.firstname+" "+widget.namePage.lastname+" , "+widget.namePage.pincode,
                                       overflow: TextOverflow.fade,
                                       maxLines: 1,
                                       softWrap: false,
@@ -59,7 +73,7 @@ class _CartState extends State<Cart> {
                                 ,),
 
                               Container(
-                                child: Text("C-20 NavTrilok CHS , Shrikhandewadi , LaxmibaiNerurkar road , Dombivli East",
+                                child: Text(widget.namePage.housename+" , "+widget.namePage.roadname+" , "+widget.namePage.city,
                                   overflow: TextOverflow.fade,
                                   maxLines: 1,
                                   softWrap: false,
@@ -78,7 +92,8 @@ class _CartState extends State<Cart> {
                           padding: const EdgeInsets.fromLTRB(10,0,0,0),
                           child: InkWell(
                             onTap: () {
-
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) => ProfilePage(newpage: widget.namePage , setpre: setpre,)));
                             },
                             child: new Container(
                               padding: const EdgeInsets.symmetric(horizontal: 15 , vertical: 10),

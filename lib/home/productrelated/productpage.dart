@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+import 'package:shavishank/models/user.dart';
 import 'package:shavishank/services/database.dart';
 
 
@@ -11,8 +14,16 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
+  int quantity ;
+
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
+    quantity =1;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -136,7 +147,6 @@ class _ProductPageState extends State<ProductPage> {
 
                                         SizedBox(
                                           width: 10,
-
                                         ),
                                         Text(widget.product.price.toString(),
                                           style: TextStyle(
@@ -146,8 +156,14 @@ class _ProductPageState extends State<ProductPage> {
                                     ),
                                     SizedBox(height: 10,),
                                     InkWell(
-                                      onTap: () {
+                                      onTap: () async{
+                                        final user = await Provider.of<CustomUser>(context ,listen: false);
+                                        final temp = await DatabaseService().Userdata.doc(user.uid).collection("Cart").doc("5").set({
+                                          "productID" : widget.product.id,
+                                          "quantiiy"  : quantity.toString(),
+                                        });
 
+                                        Fluttertoast.showToast(msg: "Product added to cart");
                                       },
                                       child: new Container(
                                         padding: const EdgeInsets.all(10.0),
@@ -155,7 +171,6 @@ class _ProductPageState extends State<ProductPage> {
                                           borderRadius: BorderRadius.all(Radius.circular(10)),
                                           color: Colors.white,
                                           border: Border.all(color: Colors.black),
-
                                         ),
                                         child: new Text("ADD TO CART", style: new TextStyle(color: Colors.black, fontSize: 20.0)),
                                       ),//............
