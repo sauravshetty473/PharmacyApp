@@ -15,10 +15,7 @@ class DatabaseService{
  Stream<QuerySnapshot> get nothing{
   return medCollection.snapshots();
  }
-
 }
-
-
 
 
 class Product{                       //this is my own class // i will store the document id too in it too open the product detail page

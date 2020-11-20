@@ -1,15 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shavishank/home/profile/profile.dart';
 import 'package:shavishank/models/fillingclasses.dart';
+import 'package:shavishank/models/user.dart';
+import 'package:shavishank/services/Payments/payment.dart';
+import 'package:shavishank/services/database.dart';
+import 'package:shavishank/shared/getdata.dart';
 
 class Cart extends StatefulWidget {
   NamePage namePage;
-  Cart(this.namePage);
+  List temp;
+
+  Cart(this.namePage,this.temp);
   @override
   _CartState createState() => _CartState();
 }
 
 class _CartState extends State<Cart> {
+  List secondtemp;
+  int totalprice = 0;
+  @override
+  void initState() {
+     secondtemp = widget.temp;
+    super.initState();
+  }
 
   void setpre(newpage){
     this.setState(() {
@@ -19,9 +33,17 @@ class _CartState extends State<Cart> {
 
 
 
+  void setsta(String id) async{
+    secondtemp =  await getCartData(id);
+    setState((){
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
+    totalprice = 0;
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -108,25 +130,13 @@ class _CartState extends State<Cart> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 20,),
-                  ProductInCart(
 
-                  ),
+                 ...secondtemp.map((e) {
+                   this.totalprice += int.parse((e as CartProductInfo).quantity)*int.parse((e as CartProductInfo).myprice);
+                   return ProductInCart(e,widget.namePage,this.setsta);
+                 }).toList(),
 
-                  SizedBox(height: 20,),
-                  ProductInCart(
 
-                  ),
-
-                  SizedBox(height: 20,),
-                  ProductInCart(
-
-                  ),
-
-                  SizedBox(height: 20,),
-                  ProductInCart(
-
-                  ),
 
                 ],
               ),
@@ -153,7 +163,9 @@ class _CartState extends State<Cart> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("\u20B92000"),
+                Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20),
+                    child: Text("\u20B9"+totalprice.toString(),style: TextStyle(fontSize: 20),)),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10  ,vertical: 10),
                   child: Container(
@@ -168,26 +180,24 @@ class _CartState extends State<Cart> {
                     child: FlatButton(
                       padding: EdgeInsets.symmetric(horizontal: 50,vertical:0),
                       onPressed: (){
-                      },
 
+                        Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => Payment(name: widget.namePage.firstname + " " + widget.namePage.lastname,amount: totalprice.toString(),email: widget.namePage.emailid,),
+                        ));
+
+
+                      },
                       child: Text("Place Order",
                         style: TextStyle(
                           color: Colors.white,
                         ),
-
-
-
                       ),
                     ),
                   ),
                 )
-
-
-
               ],
             ),
           )
-
         ],
       ),
     );
@@ -204,161 +214,189 @@ class _CartState extends State<Cart> {
 
 class ProductInCart extends StatelessWidget {
 
+  CartProductInfo e;
+  NamePage _namePage;
+  Function setsta;
+
+
+  ProductInCart(this.e,this._namePage,this.setsta);
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height/3;
 
-    return Container(
-      height: height,
-      color: Colors.white,
-      width: MediaQuery.of(context).size.width,
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: Container(
-              height: height*2.2/3,
-              child: Column(
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                child: Text("Cadbury Bournvita Pro Health Vitamins  (200 g)",
-                                  overflow: TextOverflow.fade,
-                                  maxLines: 1,
-                                  softWrap: false,
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text("(200 g)",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey,
-
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        Flexible(
-                          child: Image(
-                            image: NetworkImage("https://rukminim1.flixcart.com/image/416/416/kdvzwcw0/milk-drink-mix/x/z/g/200-pro-health-vitamins-plastic-bottle-cadbury-bournvita-original-imafuzwyhpymmy6x.jpeg?q=70"),
-                          ),
-                        )
-
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    flex: 3,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      children: [
+        SizedBox(height: 20,),
+        Container(
+          height: height,
+          color: Colors.white,
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Container(
+                  height: height*2.2/3,
+                  child: Column(
+                    children: [
+                      Expanded(
+                        flex: 3,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                              children: [
-                                Text("\u20B91000",
-                                  style: TextStyle(
-                                    fontSize: 20
-
-
-
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    child: Text(e.name,
+                                      overflow: TextOverflow.fade,
+                                      maxLines: 1,
+                                      softWrap: false,
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
                                   ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(e.subinfo,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.grey,
+
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            Flexible(
+                              child: Image(
+                                image: NetworkImage(e.imageurl),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text("\u20B9"+e.myprice,
+                                      style: TextStyle(
+                                        fontSize: 20
+
+
+
+                                      ),
+                                    ),
+                                    SizedBox(width:10 ,),
+
+                                    Text("\u20B9"+e.price,
+                                      style: TextStyle(
+                                        decoration: TextDecoration.lineThrough,
+                                        color: Colors.grey,
+
+
+
+                                      ),
+                                    ),
+                                  ],
+
                                 ),
-                                SizedBox(width:10 ,),
-
-                                Text("\u20B92000",
+                                SizedBox(height:10 ,),
+                                Text(((double.parse(e.price)-double.parse(e.myprice))*100/double.parse(e.price)).toStringAsFixed(0)+"% off",
                                   style: TextStyle(
-                                    decoration: TextDecoration.lineThrough,
-                                    color: Colors.grey,
-
-
-
+                                    color: Colors.green
                                   ),
                                 ),
                               ],
-
                             ),
-                            SizedBox(height:10 ,),
-                            Text("50% off",
-                              style: TextStyle(
-                                color: Colors.green
 
+                            Row(
+                              
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
+                                    margin: EdgeInsets.symmetric(horizontal: 10),
+                                    decoration: BoxDecoration(
+                                        color: Colors.black,
+                                        borderRadius: BorderRadius.all(Radius.circular(10))),
 
+                                    child: Text(e.quantity , style: TextStyle(color: Colors.white , fontSize: 20), )),
+                                InkWell(
+                                  onTap: () {
 
-                              ),
+                                  },
+                                  child: new Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 15 , vertical: 10),
+                                    decoration: new BoxDecoration(
+                                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                                      border: Border.all(color: Colors.black.withAlpha(50)),
+                                    ),
+                                    child: new Text("Change", style: new TextStyle(color: Colors.blue, fontSize: 15.0 , fontWeight: FontWeight.w500)),
+                                  ),//............
+                                ),
+                              ],
                             ),
                           ],
                         ),
-
-                        InkWell(
-                          onTap: () {
-
-                          },
-                          child: new Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 15 , vertical: 10),
-                            decoration: new BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(5)),
-                              border: Border.all(color: Colors.black.withAlpha(50)),
-                            ),
-                            child: new Text("Change", style: new TextStyle(color: Colors.blue, fontSize: 15.0 , fontWeight: FontWeight.w500)),
-                          ),//............
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
-          Divider(
-            height: 0,
-            thickness: 2,
-          ),
-          Expanded(
-            flex: 1,
-            child: Row(
-              children: [
-                Expanded(
-                  child: FlatButton(
-                    child: Text("Save for later"),
-                    onPressed: (){
+              Divider(
+                height: 0,
+                thickness: 2,
+              ),
+              Expanded(
+                flex: 1,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: FlatButton(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                            children : [
+                          Text("Save for later",style: TextStyle(color: Colors.black.withAlpha(100) ,fontSize: 20),),
+                          Text("coming soon",style: TextStyle(color: Colors.black.withAlpha(100))),
+                        ]),
+                        onPressed: (){
 
-                    },
-                  ),
-                ),
-                VerticalDivider(
-                  thickness: 2,
-                ),
+                        },
+                      ),
+                    ),
+                    VerticalDivider(
+                      thickness: 2,
+                    ),
 
-                Expanded(
-                  child: FlatButton(
-                    child: Text("Remove item"),
-                    onPressed: (){
-                    },
-                  ),
-                ),
-              ],
-            )
-          )
-        ],
-      ),
+                    Expanded(
+                      child: FlatButton(
+                        child: Text("Remove item"),
+                        onPressed: () async{
+                          await DatabaseService().Userdata.doc(_namePage.id).collection("Cart").doc(e.id).delete();
+                          setsta(_namePage.id);
+                        },
+                      ),
+                    ),
+                  ],
+                )
+              )
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

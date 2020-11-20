@@ -72,8 +72,9 @@ class _HomeState extends State<Home> {
                   icon: Icon(Icons.shopping_cart),
                   onPressed: () async{
                     final user = await getdata(context);
+                    final list = await getCartData(user.uid);
                     await Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => CartAnon(user),
+                      builder: (context) => CartAnon(user,list),
                     ));
                   },
                 )

@@ -1,15 +1,34 @@
+
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shavishank/home/productrelated/productpage.dart';
+import 'package:shavishank/models/user.dart';
 import 'package:shavishank/services/database.dart';
 
 
 
 class MainProductCard extends StatelessWidget {
   Product product;
-  MainProductCard( this.product);
+  MainProductCard(this.product);
+
+
+
+
+
+
+
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
+
+
+
+
     double height = MediaQuery.of(context).size.height/4.5;
     return Padding(
       padding: const EdgeInsets.fromLTRB(8,0,8,8),
@@ -153,7 +172,7 @@ class _MainProductLoadingState extends State<MainProductLoading> with SingleTick
       child: Card(
         child: ShaderMask(
           shaderCallback: (rect){
-            return LinearGradient(colors: [anim1.value ,anim2.value] ).createShader(rect);
+            return LinearGradient(colors:   [anim2.value , anim1.value]).createShader(rect);
           },
           child: Container(
             decoration: BoxDecoration(

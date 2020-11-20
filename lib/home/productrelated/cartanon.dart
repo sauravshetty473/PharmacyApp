@@ -5,13 +5,15 @@ import 'package:shavishank/home/productrelated/cart.dart';
 import 'package:shavishank/home/profile/profile.dart';
 import 'package:shavishank/models/fillingclasses.dart';
 import 'package:shavishank/models/user.dart';
+import 'package:shavishank/shared/getdata.dart';
 
 
 
 
 class CartAnon extends StatelessWidget {
+  final temp2;
   NamePage namePage;
-  CartAnon(this.namePage);
+  CartAnon(this.namePage,this.temp2);
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +49,7 @@ class CartAnon extends StatelessWidget {
                 ),
               ],
             ),)
-      ):Cart(namePage);
+      ):Cart(namePage,temp2);
     }
     else
       {

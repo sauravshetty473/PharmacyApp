@@ -67,5 +67,97 @@ Future getdata(BuildContext context) async{
     }
   });
 
-  return NamePage(firstname: firstname , lastname: lastname , ismale: ismale , phonenumber: phonenumber,housename: housename,roadname: roadname,city: city,state: state,landmark: landmark,alternatephonenumber: alternatephonenumber,pincode: pincode);
+  return NamePage(firstname: firstname , lastname: lastname , ismale: ismale , phonenumber: phonenumber,housename: housename,roadname: roadname,city: city,state: state,landmark: landmark,alternatephonenumber: alternatephonenumber,pincode: pincode,emailid: user.emailid,id: user.uid);
+}
+
+
+
+Future getCartData(String user) async{
+  List listfinal = new List();
+ final list = await DatabaseService().Userdata.doc(user).collection("Cart").get().then((value) => value.docs.forEach((element)=>listfinal.add(CartProductInfo(name: element.get("name"), subinfo: element.get("subinfo"), price: element.get("price"), myprice: element.get("myprice"), quantity: element.get("quantity"), imageurl : element.get("imageurl"),id:element.id))));
+ print(listfinal);
+ return listfinal;
+}
+
+
+void setCartData(BuildContext context,Product product, int quantity) async{
+  final user = Provider.of<CustomUser>(context , listen:  false);
+  try{
+    await DatabaseService().Userdata.doc(user.uid).collection("Cart").doc(product.id).update(
+        {
+          "name" : product.name ,
+          "subinfo" : product.subinfo,
+          "price"  : product.price.toString(),
+          "myprice" :product.myprice.toString(),
+          "imageurl" : product.imageUrl,
+          "quantity" :quantity.toString(),
+        }
+    );
+  }
+  catch(e){
+    await DatabaseService().Userdata.doc(user.uid).collection("Cart").doc(product.id).set(
+        {
+          "name" : product.name ,
+          "subinfo" : product.subinfo,
+          "price"  :product.price.toString(),
+          "myprice" :product.myprice.toString(),
+          "imageurl" : product.imageUrl,
+          "quantity" : quantity.toString(),
+        }
+    );
+
+  }
+}
+/*
+void setWishList(BuildContext context,Product product, int quantity) async{
+  final user = Provider.of<CustomUser>(context , listen:  false);
+  try{
+    await DatabaseService().Userdata.doc(user.uid).collection("Cart").doc(product.id).update(
+        {
+          "name" : product.name ,
+          "subinfo" : product.subinfo,
+          "price"  : product.price.toString(),
+          "myprice" :product.myprice.toString(),
+          "imageurl" : product.imageUrl,
+          "quantity" :quantity.toString(),
+        }
+    );
+  }
+  catch(e){
+    await DatabaseService().Userdata.doc(user.uid).collection("Cart").doc(product.id).set(
+        {
+          "name" : product.name ,
+          "subinfo" : product.subinfo,
+          "price"  :product.price.toString(),
+          "myprice" :product.myprice.toString(),
+          "imageurl" : product.imageUrl,
+          "quantity" : quantity.toString(),
+        }
+    );
+  }
+}   */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class CartProductInfo{
+  String id;
+  String name;
+  String subinfo;
+  String price;
+  String myprice;
+  String quantity;
+  String imageurl;
+  CartProductInfo({this.name,this.subinfo,this.price,this.myprice, this.quantity,this.imageurl,this.id});
 }

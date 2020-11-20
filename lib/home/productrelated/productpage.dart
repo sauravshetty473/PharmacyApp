@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:shavishank/models/user.dart';
 import 'package:shavishank/services/database.dart';
+import 'package:shavishank/shared/getdata.dart';
 
 
 class ProductPage extends StatefulWidget {
@@ -14,7 +15,11 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-  int quantity ;
+  int quantity=1;
+
+
+
+
 
 
 
@@ -23,7 +28,6 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
-    quantity =1;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -82,7 +86,11 @@ class _ProductPageState extends State<ProductPage> {
                                       children: [
                                         InkWell(
                                           onTap: () {
-
+                                            if(quantity!=1){
+                                              setState(() {
+                                                quantity--;
+                                              });
+                                            }
                                           },
                                           child: new Container(
                                             padding: const EdgeInsets.all(10.0),
@@ -98,12 +106,14 @@ class _ProductPageState extends State<ProductPage> {
 
                                         SizedBox(width: 10,),
 
-                                        Center(child: Text("1")),
+                                        Center(child: Text(quantity.toString())),
 
                                         SizedBox(width: 10,),
                                         InkWell(
                                           onTap: () {
-
+                                            setState(() {
+                                              quantity++;
+                                            });
                                           },
                                           child: new Container(
                                             padding: const EdgeInsets.all(10.0),
@@ -157,13 +167,9 @@ class _ProductPageState extends State<ProductPage> {
                                     SizedBox(height: 10,),
                                     InkWell(
                                       onTap: () async{
-                                        final user = await Provider.of<CustomUser>(context ,listen: false);
-                                        final temp = await DatabaseService().Userdata.doc(user.uid).collection("Cart").doc("5").set({
-                                          "productID" : widget.product.id,
-                                          "quantiiy"  : quantity.toString(),
-                                        });
-
+                                        await setCartData(context,widget.product,quantity);
                                         Fluttertoast.showToast(msg: "Product added to cart");
+
                                       },
                                       child: new Container(
                                         padding: const EdgeInsets.all(10.0),

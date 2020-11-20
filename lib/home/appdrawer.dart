@@ -23,7 +23,7 @@ class _AppDrawerState extends State<AppDrawer> {
 
   @override
   Widget build (BuildContext context) {
-  //  final user = Provider.of<User>(context);                                    //getting info of user
+  //  final user = Provider.of<CustomUser>(context);                                    //getting info of user
     return Drawer(
       elevation: 0,
       child: SafeArea(
@@ -59,8 +59,11 @@ class _AppDrawerState extends State<AppDrawer> {
                 child: Text("Cart"),
                 onPressed: () async{
                   NamePage newclass = await getdata(context);
+                  final user = Provider.of<CustomUser>(context , listen: false);
+                  final list = await getCartData(user.uid);
+
                   await Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => CartAnon(newclass)));
+                      builder: (context) => CartAnon(newclass , list)));
                 },
               ),
               AppDrawerFlatButton(

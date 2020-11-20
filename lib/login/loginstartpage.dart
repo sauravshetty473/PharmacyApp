@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:shavishank/login/authenticate.dart';
 import 'package:shavishank/models/loginslides.dart';
 import 'dart:async';
+
 import 'package:shavishank/shared/dotindicator.dart';
+
 
 
 class LoginInfoSlideView extends StatefulWidget {
