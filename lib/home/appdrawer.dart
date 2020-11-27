@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shavishank/home/productrelated/cartanon.dart';
+import 'package:shavishank/home/productrelated/cartshell.dart';
 import 'package:shavishank/home/profile/profile.dart';
-import 'package:shavishank/home/profile/separateanonymous.dart';
+import 'package:shavishank/home/profile/profileshell.dart';
 import 'package:shavishank/models/fillingclasses.dart';
 import 'package:shavishank/models/user.dart';
 import 'package:shavishank/services/database.dart';
@@ -44,10 +44,9 @@ class _AppDrawerState extends State<AppDrawer> {
 
               FlatButton(
                 child: Text("Profile"),
-                onPressed: () async{
-                  NamePage newclass = await getdata(context);
-                  await Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => SeparateAnon(newpage: newclass)));
+                onPressed: () {
+                   Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => ProfileShell()));
                  },
               ),
 
@@ -57,13 +56,9 @@ class _AppDrawerState extends State<AppDrawer> {
               ),
               FlatButton(
                 child: Text("Cart"),
-                onPressed: () async{
-                  NamePage newclass = await getdata(context);
-                  final user = Provider.of<CustomUser>(context , listen: false);
-                  final list = await getCartData(user.uid);
-
-                  await Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => CartAnon(newclass , list)));
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => CartShell()));
                 },
               ),
               AppDrawerFlatButton(
@@ -86,10 +81,12 @@ class _AppDrawerState extends State<AppDrawer> {
                 name: "Policy",
                 pushwidget: ProfilePage(),
               ),
-
-
-
-
+              FlatButton(
+                child: Text("Log Out"),
+                onPressed: (){
+                  FirebaseAuth.instance.signOut();
+                },
+              )
             ],
           ),
         ),

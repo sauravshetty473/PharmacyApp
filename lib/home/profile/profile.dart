@@ -11,7 +11,7 @@ import 'package:shavishank/services/database.dart';
 
 class ProfilePage extends StatefulWidget {
   NamePage newpage;
-  Function setpre;
+  final ValueChanged<NamePage> setpre;                  //////////////////////////////////important
   ProfilePage({this.newpage,this.setpre});
 
   @override
@@ -22,16 +22,20 @@ class _ProfilePageState extends State<ProfilePage> {
  String name;
  String phonenumber;
 
-  void setsta(NamePage namepage){
-    this.setState(() {
+  void setsta(NamePage namepage) async{
       widget.newpage = namepage;
-      widget.setpre(namepage);
+      if(widget.setpre!=null){
+        widget.setpre(namepage);
+      }
+    await Future.delayed(Duration(seconds: 1));
+    setState(() {
     });
   }
   bool _ismale;
 
 
  Widget rowModifier(bool ismale){
+   print(ismale);
    return ismale==null?Row(
      mainAxisAlignment: MainAxisAlignment.center,
      crossAxisAlignment: CrossAxisAlignment.center,
@@ -47,16 +51,8 @@ class _ProfilePageState extends State<ProfilePage> {
        ),
        Gender(male: false,imageURL:"assets/images/female.png"),
      ],
-   ):Row(
-     mainAxisAlignment: MainAxisAlignment.center,
-     crossAxisAlignment: CrossAxisAlignment.center,
-
-     children: [
-       ismale==true?Gender(male: true,imageURL:"assets/images/male.png"):Gender(male: false,imageURL:"assets/images/female.png"),
-     ],
-   );
+   ):modifiedGender(ismale);
  }
-
 
 
   Widget Gender({bool male, String imageURL}){
@@ -77,18 +73,28 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
-      onPressed: (){
-        setState(() {
-          if (male) {
-            _ismale = true;
-            //firebase.set
-          } else {
-            _ismale = false;
-          }
-        });
-      },
     );
   }
+
+ Widget modifiedGender(bool male){
+   return Stack(
+     alignment: Alignment.center,
+     children: [
+       CircleAvatar(
+         radius: MediaQuery.of(context).size.width/10,
+         backgroundColor: Colors.black.withAlpha(100),
+       ),
+       CircleAvatar(
+         radius: MediaQuery.of(context).size.width/12,
+         child: Image(
+           image: male?AssetImage("assets/images/male.png"):AssetImage("assets/images/female.png"),
+         ),
+       ),
+     ],
+   );
+ }
+
+
 
   Widget ProfileCards({String title , String subtitle ,String butName , Widget widget}){
     return Card(
@@ -145,36 +151,15 @@ class _ProfilePageState extends State<ProfilePage> {
 
 
 
+
+
+
+
     return Scaffold(
       backgroundColor: Colors.grey[200],
 
       appBar: AppBar(title: Text("My Account"),
         elevation: 0.0,
-
-        actions: [
-
-          IconButton(
-            iconSize: 25,
-            highlightColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            padding: EdgeInsets.all(0),
-            icon: Icon(Icons.notifications),
-            onPressed: (){
-              Navigator.push(context, MaterialPageRoute(
-                builder: (context) => NamePhone(),
-              ));
-            },
-          ),
-          IconButton(
-            iconSize: 25,
-            highlightColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            padding: EdgeInsets.all(0),
-            icon: Icon(Icons.shopping_cart),
-            onPressed: (){
-            },
-          )
-        ],
       ),
 
       body: SingleChildScrollView(

@@ -29,14 +29,16 @@ class Product{                       //this is my own class // i will store the 
  String id;
  QueryDocumentSnapshot e;
 
- Product(this.e){
-  name = e.get("name");
-  description = e.get("description");
-  imageUrl = e.get("imageurl");
-  subinfo = e.get("subinfo");
-  price =int.parse(e.get("price"));
-  myprice =int.parse(e.get("myprice"));
-  quantity =int.parse(e.get("quantity"));
-  id = e.id;
+ Product({this.e , this.name , this.description , this.imageUrl , this.subinfo  , this.price , this.myprice , this.quantity ,this.id}){
+  if(this.e!=null){
+   name = e.get("name");
+   description = e.get("description");
+   imageUrl = e.get("imageurl");
+   subinfo = e.get("subinfo");
+   price =int.parse(e.get("price"));
+   myprice =int.parse(e.get("myprice"));
+   quantity =int.parse(e.get("quantity"));
+   id = e.id;
+  }
  }
 }

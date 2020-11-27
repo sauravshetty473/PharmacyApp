@@ -26,9 +26,9 @@ class _CartState extends State<Cart> {
   }
 
   void setpre(newpage){
-    this.setState(() {
       widget.namePage = newpage;
-    });
+      setState(() {
+      });
   }
 
 
@@ -46,6 +46,7 @@ class _CartState extends State<Cart> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 21, 35, 55),
         elevation: 0,
         title: Text("My Cart"),
       ),
@@ -169,6 +170,7 @@ class _CartState extends State<Cart> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10  ,vertical: 10),
                   child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10),
                     decoration : BoxDecoration(
                       color: Color.fromARGB(255, 21, 35, 55),
                       borderRadius: BorderRadius.all(
@@ -358,7 +360,7 @@ class ProductInCart extends StatelessWidget {
               ),
               Divider(
                 height: 0,
-                thickness: 2,
+                thickness: 1,
               ),
               Expanded(
                 flex: 1,
@@ -378,7 +380,7 @@ class ProductInCart extends StatelessWidget {
                       ),
                     ),
                     VerticalDivider(
-                      thickness: 2,
+                      thickness: 1,
                     ),
 
                     Expanded(

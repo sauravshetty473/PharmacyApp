@@ -69,7 +69,7 @@ class SearchPacks extends StatelessWidget {
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
-             children: list!=null?list.docs.map((e) => MainProductCard(Product(e))).toList():[MainProductLoading(),MainProductLoading(),MainProductLoading(),MainProductLoading(),MainProductLoading(),],
+             children: list!=null?list.docs.map((e) => MainProductCard(Product(e: e))).toList():[MainProductLoading(),MainProductLoading(),MainProductLoading(),MainProductLoading(),MainProductLoading(),],
             ),
           )
         ],

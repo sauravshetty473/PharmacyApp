@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:flutter/services.dart';
 
 
 
@@ -36,7 +37,7 @@ class _PaymentState extends State<Payment> {
 
   void openCheckout(){
     var options = {
-      "key" : "rzp_test_kca3MIeJuxK23C",
+      "key" : "rzp_test_56L0tYqVwqLbA1",
       "amount" : int.parse(widget.amount)*100,
       "name"  : "Payment",
       "description" : "payment for the products",
@@ -61,14 +62,14 @@ class _PaymentState extends State<Payment> {
 
 
 
-  void handlerPaymentSuccess(String e){
+  void handlerPaymentSuccess(PaymentSuccessResponse successResponse){
     Fluttertoast.showToast(msg: "Payment successful");
     print("sdfasdfsadfsadf");
   }
-  void handlerPaymentError(String e){
+  void handlerPaymentError(PaymentFailureResponse e){
     Fluttertoast.showToast(msg: "Payment error");
   }
-  void handlerExternal(String e){
+  void handlerExternal(ExternalWalletResponse e){
    print("External");
   }
 

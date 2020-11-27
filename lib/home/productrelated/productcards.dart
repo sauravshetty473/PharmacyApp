@@ -14,104 +14,100 @@ class MainProductCard extends StatelessWidget {
 
 
 
-
-
-
-
-
-
-
-
-
   @override
   Widget build(BuildContext context) {
-
-
-
-
     double height = MediaQuery.of(context).size.height/4.5;
     return Padding(
       padding: const EdgeInsets.fromLTRB(8,0,8,8),
       child: Card(
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(5)),
-          ),
+        child: GestureDetector(
+          onTap: (){
+            Navigator.push(context, MaterialPageRoute(
+              builder: (context) => ProductPage(product: product,),
+            ));
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(5)),
+            ),
 
-          width: height*2/3,
-          height: height ,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            width: height*2/3,
+            height: height ,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
-            children: [
-              Expanded(
-                child: Image(
-                  image: NetworkImage(product.imageUrl),
-                ),
-              ),
-
-              FlatButton(
-                onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => ProductPage(product),
-                  ));
-                },
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                  height: height/2.5,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-
-                      SizedBox(
-                        height: 5,
-                      ),
-
-
-                      Container(
-
-                          child :Text(
-                            product.name,
-                            style: TextStyle(fontSize: 13),
-                            overflow: TextOverflow.fade,
-                            textAlign: TextAlign.center,
-                            maxLines: 1,
-                            softWrap: false,
-                          )),
-                      SizedBox(height: 5,),
-
-                      Row(
-                        children: [
-                          Text("\u20B9"+product.myprice.toString(),
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500
-                            ),
-                          ),
-
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text("\u20B9"+product.price.toString(),
-                            style: TextStyle(
-                                color: Colors.grey,
-                                decoration: TextDecoration.lineThrough
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      SizedBox(height: 3,),
-
-                      Text("\u20B9"+(product.price-product.myprice).toString(),
-                        style: TextStyle(
-                            color: Colors.green,
-                        ),
-                      ),
-                    ],
+              children: [
+                Expanded(
+                  child: Image(
+                    image: NetworkImage(product.imageUrl),
                   ),
                 ),
-              )
-            ],
+
+                FlatButton(
+                  onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => ProductPage(product: product,),
+                    ));
+                  },
+
+
+                  child: Container(
+                    padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                    height: height/2.5,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+
+                        SizedBox(
+                          height: 5,
+                        ),
+
+
+                        Container(
+
+                            child :Text(
+                              product.name,
+                              style: TextStyle(fontSize: 13),
+                              overflow: TextOverflow.fade,
+                              textAlign: TextAlign.center,
+                              maxLines: 1,
+                              softWrap: false,
+                            )),
+                        SizedBox(height: 5,),
+
+                        Row(
+                          children: [
+                            Text("\u20B9"+product.myprice.toString(),
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500
+                              ),
+                            ),
+
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text("\u20B9"+product.price.toString(),
+                              style: TextStyle(
+                                  color: Colors.grey,
+                                  decoration: TextDecoration.lineThrough
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        SizedBox(height: 3,),
+
+                        Text("\u20B9"+(product.price-product.myprice).toString(),
+                          style: TextStyle(
+                              color: Colors.green,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

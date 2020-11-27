@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shavishank/home/appdrawer.dart';
 import 'package:shavishank/home/productrelated/cart.dart';
-import 'package:shavishank/home/productrelated/cartanon.dart';
+import 'package:shavishank/home/productrelated/cartshell.dart';
 import 'package:shavishank/home/productrelated/productpage.dart';
 import 'package:shavishank/home/search/searchcards.dart';
 import 'package:shavishank/home/search/searchmedmain.dart';
+import 'package:shavishank/models/fillingclasses.dart';
+import 'package:shavishank/models/user.dart';
 import 'package:shavishank/services/auth.dart';
 import 'package:shavishank/shared/getdata.dart';
 
@@ -70,12 +72,9 @@ class _HomeState extends State<Home> {
                   splashColor: Colors.transparent,
                   padding: EdgeInsets.all(0),
                   icon: Icon(Icons.shopping_cart),
-                  onPressed: () async{
-                    final user = await getdata(context);
-                    final list = await getCartData(user.uid);
-                    await Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => CartAnon(user,list),
-                    ));
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => CartShell()));
                   },
                 )
               ],

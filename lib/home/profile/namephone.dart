@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:shavishank/models/fillingclasses.dart';
 import 'package:shavishank/models/user.dart';
 import 'package:shavishank/services/database.dart';
+import 'package:shavishank/shared/loadingscreen.dart';
 import 'package:shavishank/shared/textformfield.dart';
 
 typedef void StringCallback(String id);
 
 class NamePhone extends StatefulWidget {
   NamePage newclass;
-  Function setprevious;
+  final ValueChanged<NamePage> setprevious;                 //Very important , something new , calling function of parent from child             // callback maybe?
   NamePhone({this.newclass,this.setprevious});
 
   @override
@@ -63,7 +65,6 @@ class _NamePhoneState extends State<NamePhone> {
           } else {
             _ismale = false;
           }
-          print(this._ismale);
         });
       },
     );
@@ -135,34 +136,12 @@ class _NamePhoneState extends State<NamePhone> {
 
 
 
+
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        actions: [
-
-          IconButton(
-            iconSize: 25,
-            highlightColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            padding: EdgeInsets.all(0),
-            icon: Icon(Icons.notifications),
-            onPressed: (){
-
-            },
-          ),
-          IconButton(
-            iconSize: 25,
-            highlightColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            padding: EdgeInsets.all(0),
-            icon: Icon(Icons.shopping_cart),
-            onPressed: (){
-            },
-          )
-        ],
       ),
-
-
 
         body: SingleChildScrollView(
           child: Column(
@@ -253,10 +232,14 @@ class _NamePhoneState extends State<NamePhone> {
                         ),
                       ),
                       onPressed: () async{
+                        Navigator.push(context, MaterialPageRoute(
+                            builder: (context) => Loading()));
                         await savedata();
                         widget.newclass.ismale = this._ismale;
                         Navigator.pop(context);
                         widget.setprevious(widget.newclass);
+                        Navigator.pop(context);
+                        Fluttertoast.showToast(msg: "Profile updated successfully");
                       },
                     ),
                   ],

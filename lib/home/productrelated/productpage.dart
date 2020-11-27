@@ -4,11 +4,15 @@ import 'package:provider/provider.dart';
 import 'package:shavishank/models/user.dart';
 import 'package:shavishank/services/database.dart';
 import 'package:shavishank/shared/getdata.dart';
+import 'package:shavishank/shared/loadingscreen.dart';
+
+import 'cartshell.dart';
 
 
 class ProductPage extends StatefulWidget {
   Product product;
-  ProductPage(this.product);
+  String id;
+  ProductPage({this.product,this.id});
 
   @override
   _ProductPageState createState() => _ProductPageState();
@@ -28,8 +32,22 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return widget.id==null?Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+            iconSize: 25,
+            highlightColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            padding: EdgeInsets.all(0),
+            icon: Icon(Icons.shopping_cart),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => CartShell()));
+            },
+          )
+        ],
+        backgroundColor:Color.fromARGB(255, 21, 35, 55),
         elevation: 0,
 
 
@@ -213,9 +231,30 @@ class _ProductPageState extends State<ProductPage> {
 
 
       ),
+    ):FutureBuilder(
+      builder: (BuildContext context , snapshot){
+        if(snapshot.data==null){
+          return Loading();
+        }
+
+        return ProductPage(product : snapshot.data);
+      },
+      future: getProductForPage(widget.id),
     );
   }
 }
 
 
 
+Future getProductForPage(String id) async{
+  Product product;
+  await DatabaseService().medCollection.doc(id).get().then((value) {
+
+    try{
+      product = new Product(name: value["name"] , subinfo: value["subinfo"] , description: value["description"] , price: int.parse(value["price"]) , myprice: int.parse(value["myprice"]) , id: id ,  imageUrl: value["imageurl"] , quantity: int.parse(value["quantity"]));
+    }catch(e){
+      print(e.toString());
+    }
+  });
+  return product;
+}
