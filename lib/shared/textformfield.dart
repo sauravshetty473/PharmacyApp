@@ -86,3 +86,27 @@ class _FlipkartTextFieldState extends State<FlipkartTextField> {
     );
   }
 }
+
+
+
+// ignore: must_be_immutable
+class TextOverFlow extends StatelessWidget {
+  String input;
+  TextOverFlow(this.input);
+  @override
+  Widget build(BuildContext context) {
+    return                           Container(
+      child: Text(input,
+        overflow: TextOverflow.fade,
+        maxLines: 1,
+        softWrap: false,
+        style: TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+    );
+  }
+}
+

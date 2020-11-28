@@ -18,7 +18,8 @@ class Cart extends StatefulWidget {
 
 class _CartState extends State<Cart> {
   List secondtemp;
-  int totalprice = 0;
+  int totalprice=0;
+
   @override
   void initState() {
      secondtemp = widget.temp;
@@ -133,11 +134,9 @@ class _CartState extends State<Cart> {
                   ),
 
                  ...secondtemp.map((e) {
-                   this.totalprice += int.parse((e as CartProductInfo).quantity)*int.parse((e as CartProductInfo).myprice);
+                   this.totalprice += int.parse((e as CartProductInfo).quantity)*int.parse((e as CartProductInfo).myprice);             //Very important casting as class
                    return ProductInCart(e,widget.namePage,this.setsta);
                  }).toList(),
-
-
 
                 ],
               ),
@@ -184,7 +183,7 @@ class _CartState extends State<Cart> {
                       onPressed: (){
 
                         Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => Payment(name: widget.namePage.firstname + " " + widget.namePage.lastname,amount: totalprice.toString(),email: widget.namePage.emailid,),
+                          builder: (context) => Payment(name: widget.namePage.firstname + " " + widget.namePage.lastname,amount: totalprice.toString(),email: widget.namePage.emailid, CartItems: secondtemp,),
                         ));
 
 

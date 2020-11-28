@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shavishank/home/profile/address.dart';
 import 'package:shavishank/home/profile/namephone.dart';
+import 'package:shavishank/home/profile/vieworder.dart';
 import 'package:shavishank/models/fillingclasses.dart';
 import 'package:shavishank/models/user.dart';
 import 'package:shavishank/services/database.dart';
@@ -208,9 +209,9 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  ProfileCards(title: "My Orders", butName: "VIEW ALL ORDERS" , subtitle: ""),
+                  ProfileCards(title: "My Orders", butName: "VIEW ALL ORDERS" , subtitle: "" , widget: ViewOrders()),
                  // ProfileCards(title: "My Reviews", butName: "VIEW YOUR REVIEWS", subtitle: ""),
-                  ProfileCards(title: "My Addresses", butName: "VIEW MORE" , subtitle:widget.newpage.housename==""?"Add an address": widget.newpage.housename +","+widget.newpage.roadname +","+widget.newpage.city +","+widget.newpage.state +",",widget: AddressPage(addressPage: widget.newpage,setprevious: setsta,)),
+                  ProfileCards(title: "My Addresses", butName: "VIEW MORE" , subtitle:widget.newpage.housename==""?"Add an address": widget.newpage.housename +","+widget.newpage.roadname +","+widget.newpage.city +","+widget.newpage.state ,widget: AddressPage(addressPage: widget.newpage,setprevious: setsta,)),
                 ],
               ),
             ),

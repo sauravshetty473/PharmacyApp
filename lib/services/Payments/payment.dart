@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:flutter/services.dart';
+import 'package:shavishank/shared/getdata.dart';
+import 'package:shavishank/shared/orders.dart';
+import 'package:shavishank/shared/textformfield.dart';
 
 
 
@@ -10,7 +13,11 @@ class Payment extends StatefulWidget {
   String name;
   String email;
 
-  Payment({this.amount ,this.name , this.email});
+  // ignore: non_constant_identifier_names
+  List CartItems;
+
+  // ignore: non_constant_identifier_names
+  Payment({this.amount ,this.name , this.email ,this.CartItems});
   @override
   _PaymentState createState() => _PaymentState();
 }
@@ -55,22 +62,22 @@ class _PaymentState extends State<Payment> {
     catch(e){
       print(e.toString());
     }
-
-
-
   }
 
 
 
   void handlerPaymentSuccess(PaymentSuccessResponse successResponse){
+    setOrderData(context,widget.amount);
     Fluttertoast.showToast(msg: "Payment successful");
-    print("sdfasdfsadfsadf");
   }
   void handlerPaymentError(PaymentFailureResponse e){
+    print(e);
     Fluttertoast.showToast(msg: "Payment error");
   }
   void handlerExternal(ExternalWalletResponse e){
-   print("External");
+    setOrderData(context,widget.amount);
+    print(e);
+    Fluttertoast.showToast(msg: "Payment successful");
   }
 
 
@@ -81,14 +88,22 @@ class _PaymentState extends State<Payment> {
         elevation: 0,
         title: Text("Order Summary"),
       ),
-      body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: SizedBox(),
+      body: Column(
+
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: Center(
+              child: SingleChildScrollView(
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 10),
+                  child: OrderTable(amount: widget.amount , CartItems: widget.CartItems,)
+                ),
+              ),
             ),
-            Container(
+          ),
+          Center(
+            child: Container(
               decoration : BoxDecoration(
                 color: Color.fromARGB(255, 21, 35, 55),
                 borderRadius: BorderRadius.all(
@@ -108,11 +123,12 @@ class _PaymentState extends State<Payment> {
                   color: Colors.white
                 ),),
               ),
-            )
-          ],
-
-        ),
+            ),
+          )
+        ],
       ),
     );
   }
 }
+
+

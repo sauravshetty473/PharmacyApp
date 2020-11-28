@@ -9,7 +9,8 @@ class DatabaseService{
  final CollectionReference topSelling = FirebaseFirestore.instance.collection("topSelling") ;
  final CollectionReference seasonal = FirebaseFirestore.instance.collection("seasonal") ;
  final CollectionReference todaysHot = FirebaseFirestore.instance.collection("todaysHot") ;
- final CollectionReference Userdata = FirebaseFirestore.instance.collection("Userdata") ;
+ final CollectionReference Userdata = FirebaseFirestore.instance.collection("Userdata");
+ final CollectionReference Orderdata = FirebaseFirestore.instance.collection("Order") ;
 
 
  Stream<QuerySnapshot> get nothing{
