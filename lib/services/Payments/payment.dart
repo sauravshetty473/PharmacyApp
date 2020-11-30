@@ -89,7 +89,6 @@ class _PaymentState extends State<Payment> {
         title: Text("Order Summary"),
       ),
       body: Column(
-
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(

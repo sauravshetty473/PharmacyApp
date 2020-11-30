@@ -6,17 +6,19 @@ class OrderTable extends StatelessWidget {
   List CartItems;
   String amount;
   List alternative;
+  String date;
+  String orderID;
 
-  OrderTable({this.amount,this.CartItems, this.alternative});
+  OrderTable({this.amount,this.CartItems, this.alternative, this.date , this.orderID});
   @override
   Widget build(BuildContext context) {
 
     if(CartItems!=null){
       return Table(
         border: TableBorder.all(
-            color: Colors.black,
+            color: Colors.black.withAlpha(10),
             style: BorderStyle.solid,
-            width: 2),
+            width: 1),
         columnWidths: {
           0: FlexColumnWidth(3),
           1: FlexColumnWidth(1),
@@ -40,9 +42,9 @@ class OrderTable extends StatelessWidget {
     int i =-1;
     return Table(
       border: TableBorder.all(
-          color: Colors.black,
+          color: Colors.black.withAlpha(10),
           style: BorderStyle.solid,
-          width: 2),
+          width: 1),
       columnWidths: {
         0: FlexColumnWidth(3),
         1: FlexColumnWidth(1),
@@ -50,7 +52,7 @@ class OrderTable extends StatelessWidget {
       },
       children: [
         TableRow(
-            children: ["product name", "quantity" ,"price"].map((input) => TextOverFlow(input)).toList()
+            children: ["Product name", "quantity" ,"price"].map((input) => TextOverFlow(input)).toList()
         ),
         ...alternative[0].map((element) {
           i++;

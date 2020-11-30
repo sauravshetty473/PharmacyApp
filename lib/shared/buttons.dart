@@ -10,6 +10,7 @@ class AppDrawerFlatButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlatButton(
+      minWidth: 0,
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
       child: Text(name),

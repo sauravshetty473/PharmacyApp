@@ -321,35 +321,25 @@ class ProductInCart extends StatelessWidget {
                                     color: Colors.green
                                   ),
                                 ),
-                              ],
-                            ),
 
-                            Row(
-                              
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 10),
-                                    margin: EdgeInsets.symmetric(horizontal: 10),
-                                    decoration: BoxDecoration(
-                                        color: Colors.black,
-                                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                                Row(
 
-                                    child: Text(e.quantity , style: TextStyle(color: Colors.white , fontSize: 20), )),
-                                InkWell(
-                                  onTap: () {
+                                  children: [
+                                    Text("quantity", style: TextStyle(color: Colors.black.withAlpha(100)),),
+                                    
+                                    Container(
+                                        padding: EdgeInsets.symmetric(horizontal: 10),
+                                        margin: EdgeInsets.symmetric(horizontal: 10),
+                                        decoration: BoxDecoration(
+                                            color: Colors.black.withAlpha(100),
+                                            borderRadius: BorderRadius.all(Radius.circular(10))),
 
-                                  },
-                                  child: new Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 15 , vertical: 10),
-                                    decoration: new BoxDecoration(
-                                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                                      border: Border.all(color: Colors.black.withAlpha(50)),
-                                    ),
-                                    child: new Text("Change", style: new TextStyle(color: Colors.blue, fontSize: 15.0 , fontWeight: FontWeight.w500)),
-                                  ),//............
+                                        child: Text(e.quantity , style: TextStyle(color: Colors.white , fontSize: 20), )),
+                                  ],
                                 ),
                               ],
                             ),
+
                           ],
                         ),
                       ),

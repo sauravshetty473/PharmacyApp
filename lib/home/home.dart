@@ -12,6 +12,7 @@ import 'package:shavishank/home/search/searchmedmain.dart';
 import 'package:shavishank/models/fillingclasses.dart';
 import 'package:shavishank/models/user.dart';
 import 'package:shavishank/services/auth.dart';
+import 'package:shavishank/shared/csoon.dart';
 import 'package:shavishank/shared/getdata.dart';
 
 
@@ -63,6 +64,8 @@ class _HomeState extends State<Home> {
                   padding: EdgeInsets.all(0),
                   icon: Icon(Icons.notifications),
                   onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => ComingSoon("Notifications")));
 
                   },
                 ),
@@ -139,7 +142,7 @@ class _HomeState extends State<Home> {
                             controller: _insidepageController,
                             children: [
                               Image(image: AssetImage("assets/images/thumb1.png"),),
-                              Image(image: AssetImage("assets/images/thumb1.png"),),
+                              Image(image: AssetImage("assets/images/homedel.png"),),
                             ],
                           ),
                         ),

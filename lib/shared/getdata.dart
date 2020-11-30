@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:shavishank/models/fillingclasses.dart';
 import 'package:shavishank/models/user.dart';
@@ -149,6 +150,12 @@ void setOrderData(BuildContext context , String price) async{
           "completed" : "false",
         }
     );
+
+    await DatabaseService().Userdata.doc(user.uid).collection("Cart").get().then((value) => value.docs.forEach((element) {
+      element.reference.delete();
+    }));
+
+
   }catch(e){
     print(e.toString());
   }
