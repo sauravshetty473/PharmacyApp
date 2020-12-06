@@ -157,16 +157,18 @@ class _ProfilePageState extends State<ProfilePage> {
 
 
     return Scaffold(
+
       backgroundColor: Colors.grey[200],
 
       appBar: AppBar(title: Text("My Account"),
         elevation: 0.0,
+        backgroundColor: Color.fromARGB(255,78,100,123),
       ),
 
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(color: Colors.blue,
+            Container(color: Color.fromARGB(255,78,100,123),
               child: Column(
                 children: [
                   rowModifier(_ismale),
@@ -210,8 +212,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   ProfileCards(title: "My Orders", butName: "VIEW ALL ORDERS" , subtitle: "" , widget: ViewOrders()),
-                 // ProfileCards(title: "My Reviews", butName: "VIEW YOUR REVIEWS", subtitle: ""),
-                  ProfileCards(title: "My Addresses", butName: "VIEW MORE" , subtitle:widget.newpage.housename==""?"Add an address": widget.newpage.housename +","+widget.newpage.roadname +","+widget.newpage.city +","+widget.newpage.state ,widget: AddressPage(addressPage: widget.newpage,setprevious: setsta,)),
+                  ProfileCards(title: "My Addresses", butName: "VIEW MORE" , subtitle:widget.newpage.housename==""?"Add an address": widget.newpage.housename +", "+widget.newpage.roadname +", "+widget.newpage.city +", "+widget.newpage.state ,widget: AddressPage(addressPage: widget.newpage,setprevious: setsta,)),
                 ],
               ),
             ),

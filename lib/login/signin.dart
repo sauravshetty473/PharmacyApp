@@ -21,9 +21,6 @@ class _SignInState extends State<SignIn> {
   String error = "";
   bool loading = false;
 
-
-
-
   @override
   Widget build(BuildContext context) {
   return loading?Loading():Scaffold(
@@ -171,9 +168,7 @@ class _SignInState extends State<SignIn> {
 
                               ],
                             ),
-                            /*SizedBox(
-                            child: Text(error),
-                          )*/
+
                             FlatButton(
                                 child: Text("New user? Create Account", style: TextStyle(fontSize: 13 , color: Colors.blue[700]),),
                                 onPressed: widget.toggleView

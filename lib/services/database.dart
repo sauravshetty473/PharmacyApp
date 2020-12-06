@@ -41,5 +41,9 @@ class Product{                       //this is my own class // i will store the 
    quantity =int.parse(e.get("quantity"));
    id = e.id;
   }
+  else{
+
+
+  }
  }
 }

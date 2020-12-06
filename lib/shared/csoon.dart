@@ -9,6 +9,8 @@ class ComingSoon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color.fromARGB(255,78,100,123),
+        elevation: 0,
         title: Text(text),
       ),
 

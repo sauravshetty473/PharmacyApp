@@ -7,9 +7,10 @@ class OrderTable extends StatelessWidget {
   String amount;
   List alternative;
   String date;
-  String orderID;
 
-  OrderTable({this.amount,this.CartItems, this.alternative, this.date , this.orderID});
+
+  // ignore: non_constant_identifier_names
+  OrderTable({this.amount,this.CartItems, this.alternative, this.date});
   @override
   Widget build(BuildContext context) {
 
@@ -29,7 +30,7 @@ class OrderTable extends StatelessWidget {
               children: ["product name", "quantity" ,"price"].map((input) => TextOverFlow(input)).toList()
           ),
           ...CartItems.map((e) =>TableRow(
-              children: [e.name, e.quantity, e.price].map((input) => TextOverFlow(input)).toList()
+              children: [e.name, e.quantity, e.myprice].map((input) => TextOverFlow(input)).toList()
           ),),
           TableRow(
               children: ["Total ", " " , amount].map((input) => TextOverFlow(input)).toList()
@@ -40,29 +41,42 @@ class OrderTable extends StatelessWidget {
 
 
     int i =-1;
-    return Table(
-      border: TableBorder.all(
-          color: Colors.black.withAlpha(10),
-          style: BorderStyle.solid,
-          width: 1),
-      columnWidths: {
-        0: FlexColumnWidth(3),
-        1: FlexColumnWidth(1),
-        2: FlexColumnWidth(1),
-      },
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TableRow(
-            children: ["Product name", "quantity" ,"price"].map((input) => TextOverFlow(input)).toList()
+        Row(
+          children: [
+            Text("Order ID     "),
+            Text(alternative[4])
+          ],
         ),
-        ...alternative[0].map((element) {
-          i++;
-          return TableRow(
-            children: [element, (alternative[1] as List)[i], (alternative[2] as List)[i]].map((input) => TextOverFlow(input)).toList()
-        );
-        },),
-        TableRow(
-            children: ["Total ", " " , alternative[3]].map((input) => TextOverFlow(input)).toList()
+        SizedBox(height: 10,),
+        Table(
+          border: TableBorder.all(
+              color: Colors.black.withAlpha(10),
+              style: BorderStyle.solid,
+              width: 1),
+          columnWidths: {
+            0: FlexColumnWidth(3),
+            1: FlexColumnWidth(1),
+            2: FlexColumnWidth(1),
+          },
+          children: [
+            TableRow(
+                children: ["Product name", "quantity" ,"price"].map((input) => TextOverFlow(input)).toList()
+            ),
+            ...alternative[0].map((element) {
+              i++;
+              return TableRow(
+                children: [element, (alternative[1] as List)[i], (alternative[2] as List)[i]].map((input) => TextOverFlow(input)).toList()
+            );
+            },),
+            TableRow(
+                children: ["Total ", " " , alternative[3]].map((input) => TextOverFlow(input)).toList()
+            ),
+          ],
         ),
+
       ],
     );
   }

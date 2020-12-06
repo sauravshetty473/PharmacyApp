@@ -12,13 +12,13 @@ import 'package:shavishank/home/search/searchmedmain.dart';
 import 'package:shavishank/models/fillingclasses.dart';
 import 'package:shavishank/models/user.dart';
 import 'package:shavishank/services/auth.dart';
+import 'package:shavishank/services/scanQR.dart';
 import 'package:shavishank/shared/csoon.dart';
 import 'package:shavishank/shared/getdata.dart';
 
 
 
 class Home extends StatefulWidget {
-
   @override
   _HomeState createState() => _HomeState();
 }
@@ -65,7 +65,7 @@ class _HomeState extends State<Home> {
                   icon: Icon(Icons.notifications),
                   onPressed: (){
                     Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => ComingSoon("Notifications")));
+                        builder: (context) => false?ComingSoon("Notifications"):ScanPage()));
 
                   },
                 ),

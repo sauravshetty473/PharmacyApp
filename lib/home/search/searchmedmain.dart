@@ -1,10 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shavishank/home/productrelated/productpage.dart';
+import 'package:shavishank/home/productrelated/specialproductpage.dart';
 import 'package:shavishank/services/database.dart';
+import 'package:shavishank/shared/getdata.dart';
 import 'package:shavishank/shared/loadingscreen.dart';
 
 
 class SearchMed extends StatefulWidget {
+  bool normal;
+  bool add;
+  CollectionReference category;
+  SearchMed({this.normal = true , this.add = false , this.category});
   @override
   _SearchMedState createState() => _SearchMedState();
 }
@@ -26,7 +34,7 @@ class _SearchMedState extends State<SearchMed> {
       appBar: AppBar(
         title: Text("Search for medicines"),
         elevation: 0.0,
-        backgroundColor:  Color.fromARGB(255, 21, 35, 55),
+        backgroundColor:  Color.fromARGB(255,78,100,123),
       ),
 
 
@@ -37,7 +45,7 @@ class _SearchMedState extends State<SearchMed> {
             padding: const EdgeInsets.fromLTRB(5,5,5,5),
             width: double.infinity,
             height: MediaQuery.of(context).size.height/15,
-            color: Color.fromARGB(255, 21, 35, 55),
+            color: Color.fromARGB(255,78,100,123),
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 10),
               color: Colors.white,
@@ -60,7 +68,7 @@ class _SearchMedState extends State<SearchMed> {
                   return Column(
                     children: result.map((e) {
                       if(e[0]!=""){
-                        return SearchResultCards(name: e[0],imageURL: e[2], id: e[1],);
+                        return SearchResultCards(name: e[0],imageURL: e[2], id: e[1], normal : widget.normal , add: widget.add, category: widget.category,);
                       }
                       else{
                         return SizedBox();
@@ -77,6 +85,9 @@ class _SearchMedState extends State<SearchMed> {
     );
   }
 }
+
+
+
 
 
 Future getResults(String input) async{
@@ -110,19 +121,43 @@ Future getResults(String input) async{
 
 
 class SearchResultCards extends StatelessWidget {
+
+  bool normal;
   String name;
   String imageURL;
   String id;
-  SearchResultCards({this.name, this.imageURL , this.id});
+  bool add;
+  CollectionReference category;
+  SearchResultCards({this.name, this.imageURL , this.id , this.normal = true ,this.add =false , this.category});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        Navigator.push(context, MaterialPageRoute(
-          builder: (context) => ProductPage(id: id,),
-        ));
-
+      onTap: () async{
+        if(normal){
+          Navigator.push(context, MaterialPageRoute(
+            builder: (context) => normal?ProductPage(id: id,):SpecialProductPage(id: id,),                     //Product page difference for special access and normal search
+          ));
+        }
+        else{
+          if(!add){
+            Navigator.push(context, MaterialPageRoute(
+              builder: (context) => normal?ProductPage(id: id,):SpecialProductPage(id: id,),                     //Product page difference for special access and normal search
+            ));
+          }else{
+            Navigator.push(context, MaterialPageRoute(
+              builder: (context) =>Loading(),                     //Product page difference for special access and normal search
+            ));
+            var result = await addTOList(productid: this.id, category: this.category);
+            Navigator.pop(context);
+            if(result){
+              Fluttertoast.showToast(msg: "product added successfully");
+            }
+            else{
+              Fluttertoast.showToast(msg: "An error occurred");
+            }
+          }
+        }
       },
       child: Column(
         children: [
@@ -147,7 +182,11 @@ class SearchResultCards extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                )
+                ),
+                add?Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Icon(Icons.add),
+                ):SizedBox(),
               ],
             ),
           ),

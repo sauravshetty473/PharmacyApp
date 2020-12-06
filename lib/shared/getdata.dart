@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:shavishank/home/productrelated/productpage.dart';
 import 'package:shavishank/models/fillingclasses.dart';
 import 'package:shavishank/models/user.dart';
 import 'package:shavishank/services/database.dart';
@@ -125,6 +126,7 @@ void setOrderData(BuildContext context , String price) async{
   final user = Provider.of<CustomUser>(context , listen:  false);
   List temp = await getCartData(user.uid,id: true);
   String orderID = generateRandomString(25);
+  String code = generateRandomString(25);
 
   try{
     await DatabaseService().Userdata.doc(user.uid).collection("Order").doc(orderID).set(
@@ -136,6 +138,7 @@ void setOrderData(BuildContext context , String price) async{
           "totalprice" : price,
           "orderID"  : orderID,
           "completed" : "false",
+          "code"  :  code
         }
     );
 
@@ -148,6 +151,7 @@ void setOrderData(BuildContext context , String price) async{
           "totalprice" : price,
           "orderID"  : orderID,
           "completed" : "false",
+          "code"    : code
         }
     );
 
@@ -169,10 +173,10 @@ Future getOrderData(BuildContext context) async{
   await DatabaseService().Userdata.doc(user.uid).collection("Order").get().then((value) => value.docs.forEach((element) {
     try{
       if(element.get("completed")=="false"){
-        active.add([List.from(element.get("itemsname")) , List.from( element.get("itemsquantity")) , List.from(element.get("itemsprice")) ,  element.get("totalprice") , element.get("orderID")]);
+        active.add([List.from(element.get("itemsname")) , List.from( element.get("itemsquantity")) , List.from(element.get("itemsprice")) ,  element.get("totalprice") , element.get("orderID"), element.get("code")]);
       }
       else{
-        passive.add([List.from(element.get("itemsname")) , List.from( element.get("itemsquantity")) , List.from(element.get("itemsprice")) ,  element.get("totalprice") , element.get("orderID")]);
+        passive.add([List.from(element.get("itemsname")) , List.from( element.get("itemsquantity")) , List.from(element.get("itemsprice")) ,  element.get("totalprice") , element.get("orderID"), element.get("code")]);
       }
     }
     catch(e)
@@ -182,14 +186,8 @@ Future getOrderData(BuildContext context) async{
 
   }));
 
-  return [active , passive];
-
+  return [active , passive ];
 }
-
-
-
-
-
 
 class CartProductInfo{
   String id;
@@ -204,11 +202,47 @@ class CartProductInfo{
 
 
 
-
-
-
-
 String generateRandomString(int len) {
   var r = Random();
   return String.fromCharCodes(List.generate(len, (index) => r.nextInt(33) + 89));
+}
+
+
+
+Future saveProductData({String quantity , String price , String myprice , String id}) async{
+  try{
+    await DatabaseService().medCollection.doc(id).update({
+      "quantity" : quantity,
+      "price"    : price,
+      "myprice"  : myprice
+    });
+    return true;
+  }
+  catch(e){
+    print(e.toString());
+    return false;
+  }
+}
+
+
+Future addTOList({String productid , CollectionReference category}) async{
+
+  Product product = await getProductForPage(productid);
+
+  try{
+    await category.doc(productid).set({
+      "name" : product.name ,
+      "subinfo" : product.subinfo,
+      "price"  : product.price.toString(),
+      "myprice" :product.myprice.toString(),
+      "imageurl" : product.imageUrl,
+      "quantity" :product.quantity.toString(),
+      "description" :product.description
+    });
+    return true;
+  }
+  catch(e){
+    print(e.toString());
+    return false;
+  }
 }

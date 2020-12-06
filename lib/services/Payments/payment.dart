@@ -23,6 +23,7 @@ class Payment extends StatefulWidget {
 }
 
 class _PaymentState extends State<Payment> {
+  bool done =false;
   Razorpay razorpay;
 
   @override
@@ -69,6 +70,10 @@ class _PaymentState extends State<Payment> {
   void handlerPaymentSuccess(PaymentSuccessResponse successResponse){
     setOrderData(context,widget.amount);
     Fluttertoast.showToast(msg: "Payment successful");
+    setState(() {
+      done = true;
+      print(done);
+    });
   }
   void handlerPaymentError(PaymentFailureResponse e){
     print(e);
@@ -76,7 +81,8 @@ class _PaymentState extends State<Payment> {
   }
   void handlerExternal(ExternalWalletResponse e){
     setOrderData(context,widget.amount);
-    print(e);
+    Navigator.pop(context);
+    Navigator.pop(context);
     Fluttertoast.showToast(msg: "Payment successful");
   }
 
@@ -85,6 +91,7 @@ class _PaymentState extends State<Payment> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor:  Color.fromARGB(255,78,100,123),
         elevation: 0,
         title: Text("Order Summary"),
       ),

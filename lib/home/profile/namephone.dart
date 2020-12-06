@@ -140,13 +140,14 @@ class _NamePhoneState extends State<NamePhone> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor:  Color.fromARGB(255,78,100,123),
         elevation: 0,
       ),
 
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Container(color: Colors.blue,
+              Container(color:  Color.fromARGB(255,78,100,123),
                 child: Column(
                   children: [
                     Padding(

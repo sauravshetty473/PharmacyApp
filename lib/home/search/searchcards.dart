@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shavishank/home/productrelated/productcards.dart';
+import 'package:shavishank/home/productrelated/seeall.dart';
 import 'package:shavishank/services/database.dart';
 
 
@@ -9,14 +10,31 @@ import 'package:shavishank/services/database.dart';
 
 class SearchPacks extends StatelessWidget {
   final String title;
-  SearchPacks({this.title});
+  var streamvalue;
+  SearchPacks({this.title}){
+    switch(title){
+      case "Popular products":
+        streamvalue = DatabaseService().medCollection.snapshots();
+        break;
+      case "Top Selling products":
+        streamvalue = DatabaseService().topSelling.snapshots();
+        break;
+      case "Seasonal products":
+        streamvalue = DatabaseService().seasonal.snapshots();
+        break;
+      case "Today's hot deal":
+        streamvalue = DatabaseService().todaysHot.snapshots();
+        break;
+    }
+  }
+
+
 
 
   @override
   Widget build(BuildContext context) {
+
     final list = Provider.of<QuerySnapshot>(context);
-
-
 
     return Container(
       margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
@@ -60,18 +78,36 @@ class SearchPacks extends StatelessWidget {
                       ),
                     ),
                     onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => SeeAll(this.title)));
                     },
                   ),
                 )
               ],
             ),
           ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-             children: list!=null?list.docs.map((e) => MainProductCard(Product(e: e))).toList():[MainProductLoading(),MainProductLoading(),MainProductLoading(),MainProductLoading(),MainProductLoading(),],
-            ),
-          )
+          StreamBuilder(
+            stream: streamvalue,
+            builder: (context ,snapshot){
+
+              if(snapshot.data==null){
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [MainProductLoading(),MainProductLoading(),MainProductLoading(),MainProductLoading(),MainProductLoading()],
+                  ),
+                );
+              }
+
+
+              return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                    children: snapshot.data.docs.getRange(0, snapshot.data.docs.length>10?10:snapshot.data.docs.length).map<Widget>((e) => MainProductCard(Product(e: e))).toList()
+                ),
+              );
+            },
+          ),
         ],
       ),
     );

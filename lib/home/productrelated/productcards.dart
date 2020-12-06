@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shavishank/home/productrelated/productpage.dart';
+import 'package:shavishank/home/productrelated/specialproductpage.dart';
 import 'package:shavishank/models/user.dart';
 import 'package:shavishank/services/database.dart';
 
@@ -10,7 +11,8 @@ import 'package:shavishank/services/database.dart';
 
 class MainProductCard extends StatelessWidget {
   Product product;
-  MainProductCard(this.product);
+  bool special ;
+  MainProductCard(this.product,{this.special = false});
 
 
 
@@ -22,9 +24,17 @@ class MainProductCard extends StatelessWidget {
       child: Card(
         child: GestureDetector(
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(
-              builder: (context) => ProductPage(product: product,),
-            ));
+            if(!special){
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) => ProductPage(product: product,),
+              ));
+            }
+            else{
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) => SpecialProductPage(id: product.id,),
+              ));
+            }
+
           },
           child: Container(
             decoration: BoxDecoration(
@@ -37,73 +47,65 @@ class MainProductCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
               children: [
+                SizedBox(height: 10,),
                 Expanded(
                   child: Image(
                     image: NetworkImage(product.imageUrl),
                   ),
                 ),
 
-                FlatButton(
-                  onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => ProductPage(product: product,),
-                    ));
-                  },
+                Container(
+                  padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  height: height/2.5,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+
+                      SizedBox(
+                        height: 5,
+                      ),
 
 
-                  child: Container(
-                    padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                    height: height/2.5,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                      Container(
+                          child :Text(
+                            product.name,
+                            style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+                            overflow: TextOverflow.fade,
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
+                            softWrap: false,
+                          )),
+                      SizedBox(height: 5,),
 
-                        SizedBox(
-                          height: 5,
-                        ),
-
-
-                        Container(
-
-                            child :Text(
-                              product.name,
-                              style: TextStyle(fontSize: 13),
-                              overflow: TextOverflow.fade,
-                              textAlign: TextAlign.center,
-                              maxLines: 1,
-                              softWrap: false,
-                            )),
-                        SizedBox(height: 5,),
-
-                        Row(
-                          children: [
-                            Text("\u20B9"+product.myprice.toString(),
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500
-                              ),
+                      Row(
+                        children: [
+                          Text("\u20B9"+product.myprice.toString(),
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500
                             ),
-
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text("\u20B9"+product.price.toString(),
-                              style: TextStyle(
-                                  color: Colors.grey,
-                                  decoration: TextDecoration.lineThrough
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        SizedBox(height: 3,),
-
-                        Text("\u20B9"+(product.price-product.myprice).toString(),
-                          style: TextStyle(
-                              color: Colors.green,
                           ),
+
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text("\u20B9"+product.price.toString(),
+                            style: TextStyle(
+                                fontWeight: FontWeight.w300,
+                                color: Colors.grey,
+                                decoration: TextDecoration.lineThrough
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      SizedBox(height: 3,),
+
+                      Text("\u20B9"+(product.price-product.myprice).toString(),
+                        style: TextStyle(
+                            color: Colors.green,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 )
               ],

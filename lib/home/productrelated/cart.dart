@@ -47,7 +47,7 @@ class _CartState extends State<Cart> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 21, 35, 55),
+        backgroundColor: Color.fromARGB(255,78,100,123),
         elevation: 0,
         title: Text("My Cart"),
       ),
@@ -168,7 +168,7 @@ class _CartState extends State<Cart> {
                     child: Text("\u20B9"+totalprice.toString(),style: TextStyle(fontSize: 20),)),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10  ,vertical: 10),
-                  child: Container(
+                  child: this.totalprice!=0?Container(
                     margin: EdgeInsets.symmetric(horizontal: 10),
                     decoration : BoxDecoration(
                       color: Color.fromARGB(255, 21, 35, 55),
@@ -188,13 +188,13 @@ class _CartState extends State<Cart> {
 
 
                       },
-                      child: Text("Place Order",
+                      child:  Text("Place Order",
                         style: TextStyle(
                           color: Colors.white,
                         ),
                       ),
                     ),
-                  ),
+                  ):SizedBox(height:48 ,),
                 )
               ],
             ),
