@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shavishank/home/productrelated/productpage.dart';
 import 'package:shavishank/models/fillingclasses.dart';
@@ -122,36 +123,59 @@ void setCartData(BuildContext context,Product product, int quantity) async{
   }
 }
 
-void setOrderData(BuildContext context , String price) async{
+void setOrderData(BuildContext context , String price, bool COD) async{
   final user = Provider.of<CustomUser>(context , listen:  false);
   List temp = await getCartData(user.uid,id: true);
   String orderID = generateRandomString(25);
   String code = generateRandomString(25);
+  final now = new DateTime.now();
+  String formatter = DateFormat('yMd').format(now);
 
   try{
     await DatabaseService().Userdata.doc(user.uid).collection("Order").doc(orderID).set(
         {
-          "itemsname" : FieldValue.arrayUnion(temp[3]),
-          "itemsid": FieldValue.arrayUnion(temp[0]),
-          "itemsquantity": FieldValue.arrayUnion(temp[1]),
-          "itemsprice": FieldValue.arrayUnion(temp[2]),
+          "itemsname" : temp[3],
+          "itemsid": temp[0],
+          "itemsquantity": temp[1],
+          "itemsprice": temp[2],
           "totalprice" : price,
           "orderID"  : orderID,
           "completed" : "false",
-          "code"  :  code
+          "code"  :  code,
+          "date"  : formatter,
+          "prepaid" :COD?"COD":"prepaid",
         }
     );
 
+    NamePage temporary = await getdata(context);
+
     await DatabaseService().Orderdata.doc(orderID).set(
         {
-          "itemsname" : FieldValue.arrayUnion(temp[3]),
-          "itemsid": FieldValue.arrayUnion(temp[0]),
-          "itemsquantity": FieldValue.arrayUnion(temp[1]),
-          "itemsprice": FieldValue.arrayUnion(temp[2]),
+          "userid"    : user.uid,
+          "itemsname" : temp[3],
+          "self"  : "",                    //Self here
+          "itemsid": temp[0],
+          "itemsquantity": temp[1],
+          "itemsprice": temp[2],
           "totalprice" : price,
           "orderID"  : orderID,
           "completed" : "false",
-          "code"    : code
+          "code"    : code,
+          "date"    : formatter,
+          "deliveryout" : "false",
+          "datedelivered" : "false",
+          "Firstname" : temporary.firstname,
+          "Lastname" : temporary.lastname,
+          "EmailId" : temporary.emailid,
+          "Phone" : temporary.phonenumber,
+          "AltPhone" : temporary.alternatephonenumber,
+          "Pincode" : temporary.pincode,
+          "Housename" : temporary.housename,
+          "Roadname" : temporary.roadname,
+          "State" : temporary.state,
+          "City" : temporary.city,
+          "Landmark" : temporary.landmark,
+          "prepaid" :COD?"COD":"prepaid",
         }
     );
 
@@ -183,9 +207,7 @@ Future getOrderData(BuildContext context) async{
     {
       print(e.toString());
     }
-
   }));
-
   return [active , passive ];
 }
 
@@ -245,4 +267,34 @@ Future addTOList({String productid , CollectionReference category}) async{
     print(e.toString());
     return false;
   }
+}
+
+
+Future doOnDelivery(String orderID) async{
+  bool result;
+  try{
+    await DatabaseService().Orderdata.doc(orderID).update(
+        {
+          "completed" : "true"
+        }
+    );
+
+    String mid= "";
+    await DatabaseService().Orderdata.doc(orderID).get().then((value){
+      mid = value["userid"];
+    });
+    await DatabaseService().Userdata.doc(mid).collection("Order").doc(orderID).update(
+        {
+          "completed" : "true"
+        }
+    );
+
+    result = true;
+  }
+  catch(e){
+   print("Error");
+   result = false;
+  }
+
+  return result;
 }

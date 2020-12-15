@@ -17,7 +17,9 @@ class FlipkartTextField extends StatefulWidget {
   final double expandsize;
   final number;
   final String initialvalue;
-  FlipkartTextField({this.hintext , this.duration =200, this.shrinkpad=10, this.expandpad=25,this.shrinksize=10,this.expandsize=15,this.number=false,this.initialvalue,this.onSonChanged});
+  Function validator;
+
+  FlipkartTextField({this.hintext , this.duration =200, this.shrinkpad=10, this.expandpad=25,this.shrinksize=10,this.expandsize=15,this.number=false,this.initialvalue,this.onSonChanged,this.validator});
 
   @override
   _FlipkartTextFieldState createState() => _FlipkartTextFieldState();
@@ -65,6 +67,7 @@ class _FlipkartTextFieldState extends State<FlipkartTextField> {
         Padding(
           padding: const EdgeInsets.fromLTRB(0,10,0,0),
           child: TextFormField(
+            validator: widget.validator,
             initialValue: widget.initialvalue,
             keyboardType: widget.number?TextInputType.number:TextInputType.text,
             onChanged: _onChanged,
@@ -95,7 +98,7 @@ class TextOverFlow extends StatelessWidget {
   TextOverFlow(this.input);
   @override
   Widget build(BuildContext context) {
-    return                           Container(
+    return Container(
       child: Text(input,
         overflow: TextOverflow.fade,
         maxLines: 1,

@@ -1,13 +1,18 @@
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
+import 'package:shavishank/shared/getdata.dart';
 
 class ScanPage extends StatefulWidget {
+  String code;
+  String orderID;
+
+  ScanPage({this.code,this.orderID});
   @override
   _ScanPageState createState() => _ScanPageState();
 }
 
 class _ScanPageState extends State<ScanPage> {
-  String qrCodeResult = "Not Yet Scanned";
+  String qrCodeResult = "Not yet Scanned";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,11 +45,15 @@ class _ScanPageState extends State<ScanPage> {
               padding: EdgeInsets.all(15.0),
               onPressed: () async {
 
+                bool mid;
 
                 ScanResult codeSanner = await BarcodeScanner.scan();    //barcode scnner
+                if( codeSanner.rawContent==widget.code){
+                 mid = await doOnDelivery(widget.orderID);
+                }
                 print(codeSanner.toString());
                 setState(() {
-                  qrCodeResult = codeSanner.rawContent ;
+                  qrCodeResult = mid?"Scanning successful":"An error occurred";
                 });
 
                 // try{
@@ -53,8 +62,6 @@ class _ScanPageState extends State<ScanPage> {
                 //   BarcodeScanner.CameraAccessDenied;   we can print that user has denied for the permisions
                 //   BarcodeScanner.UserCanceled;   we can print on the page that user has cancelled
                 // }
-
-
               },
               child: Text(
                 "Open Scanner",
@@ -70,6 +77,5 @@ class _ScanPageState extends State<ScanPage> {
       ),
     );
   }
-
 //its quite simple as that you can use try and catch staatements too for platform exception
 }

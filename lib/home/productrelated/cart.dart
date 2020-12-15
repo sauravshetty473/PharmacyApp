@@ -326,15 +326,18 @@ class ProductInCart extends StatelessWidget {
 
                                   children: [
                                     Text("quantity", style: TextStyle(color: Colors.black.withAlpha(100)),),
-                                    
                                     Container(
-                                        padding: EdgeInsets.symmetric(horizontal: 10),
-                                        margin: EdgeInsets.symmetric(horizontal: 10),
-                                        decoration: BoxDecoration(
-                                            color: Colors.black.withAlpha(100),
-                                            borderRadius: BorderRadius.all(Radius.circular(10))),
+                                      decoration : BoxDecoration(
+                                        border: Border.all(color: Colors.red),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(5)
+                                        ),
+                                      ),
+                                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                                      child: Text(e.quantity , style: TextStyle(color: Colors.black , fontSize: 15), ),
+                                    ),
 
-                                        child: Text(e.quantity , style: TextStyle(color: Colors.white , fontSize: 20), )),
                                   ],
                                 ),
                               ],
@@ -360,8 +363,8 @@ class ProductInCart extends StatelessWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                             children : [
-                          Text("Save for later",style: TextStyle(color: Colors.black.withAlpha(100) ,fontSize: 20),),
-                          Text("coming soon",style: TextStyle(color: Colors.black.withAlpha(100))),
+                          Text("Save for later",style: TextStyle(color: Colors.black.withAlpha(100) ,fontSize: 20,fontWeight: FontWeight.w300),),
+                          Text("coming soon",style: TextStyle(color: Colors.black.withAlpha(100) , fontWeight: FontWeight.w300)),
                         ]),
                         onPressed: (){
 

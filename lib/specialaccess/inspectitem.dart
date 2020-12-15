@@ -22,6 +22,7 @@ class InspectItem extends StatelessWidget {
           backgroundColor:  Color.fromARGB(255,78,100,123),
           elevation: 0,
           bottom: TabBar(
+            indicatorColor: Colors.white,
             tabs: [
               Tab(child : Text("All Items")),
               Tab(child : Text("Top Selling")),
@@ -82,6 +83,9 @@ class InspectPages extends StatelessWidget {
                             trailingIcon: Icon(Icons.delete_forever_outlined , color: Colors.red,),
                             onPressed: () async{
                                 await (e as QueryDocumentSnapshot).reference.delete();
+                                await DatabaseService().topSelling.doc((e as QueryDocumentSnapshot).id).delete();
+                                await DatabaseService().seasonal.doc((e as QueryDocumentSnapshot).id).delete();
+                                await DatabaseService().todaysHot.doc((e as QueryDocumentSnapshot).id).delete();
                             })
                       ]
                   ):

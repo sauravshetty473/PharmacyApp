@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:flutter/services.dart';
 import 'package:shavishank/shared/getdata.dart';
+import 'package:shavishank/shared/loadingscreen.dart';
 import 'package:shavishank/shared/orders.dart';
 import 'package:shavishank/shared/textformfield.dart';
 
@@ -68,11 +69,10 @@ class _PaymentState extends State<Payment> {
 
 
   void handlerPaymentSuccess(PaymentSuccessResponse successResponse){
-    setOrderData(context,widget.amount);
+    setOrderData(context,widget.amount,false);
     Fluttertoast.showToast(msg: "Payment successful");
     setState(() {
       done = true;
-      print(done);
     });
   }
   void handlerPaymentError(PaymentFailureResponse e){
@@ -80,16 +80,17 @@ class _PaymentState extends State<Payment> {
     Fluttertoast.showToast(msg: "Payment error");
   }
   void handlerExternal(ExternalWalletResponse e){
-    setOrderData(context,widget.amount);
-    Navigator.pop(context);
-    Navigator.pop(context);
+    setOrderData(context,widget.amount,false);
     Fluttertoast.showToast(msg: "Payment successful");
+    setState(() {
+      done = true;
+    });
   }
 
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return !done?Scaffold(
       appBar: AppBar(
         backgroundColor:  Color.fromARGB(255,78,100,123),
         elevation: 0,
@@ -108,31 +109,80 @@ class _PaymentState extends State<Payment> {
               ),
             ),
           ),
-          Center(
-            child: Container(
-              decoration : BoxDecoration(
-                color: Color.fromARGB(255, 21, 35, 55),
-                borderRadius: BorderRadius.all(
-                    Radius.circular(5)
+
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                decoration : BoxDecoration(
+                  color: Color.fromARGB(255, 21, 35, 55),
+                  borderRadius: BorderRadius.all(
+                      Radius.circular(5)
+                  ),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                margin: EdgeInsets.symmetric(vertical: 30,horizontal: 10),
+
+                child: FlatButton(
+                  onPressed: (){
+                    openCheckout();
+                  },
+                  child: Text("Online Payment",
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white
+                    ),),
                 ),
               ),
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-              margin: EdgeInsets.symmetric(vertical: 10),
+              Container(
+                decoration : BoxDecoration(
+                  color: Color.fromARGB(255, 21, 35, 55),
+                  borderRadius: BorderRadius.all(
+                      Radius.circular(5)
+                  ),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                margin: EdgeInsets.symmetric(vertical: 10,horizontal: 10),
 
-              child: FlatButton(
-                onPressed: (){
-                  openCheckout();
-                },
-                child: Text("Proceed to Pay",
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white
-                ),),
+                child: FlatButton(
+                  onPressed: () async{
+                    Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => Loading()));
+                    await setOrderData(context,widget.amount,true);
+
+
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+
+                    Fluttertoast.showToast(msg: "Order placed");
+                  },
+                  child: Text("Cash on Delivery",
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white
+                    ),),
+                ),
               ),
-            ),
+            ],
           )
         ],
       ),
+    ):Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        title: Text("Order Created"),
+      ),
+
+      body: Center(child: FlatButton(
+        color: Colors.black,
+        child : Text("Back to home", style: TextStyle(color: Colors.white),),
+        onPressed: (){
+          Navigator.pop(context);
+          Navigator.pop(context);
+        },
+      ),),
     );
   }
 }

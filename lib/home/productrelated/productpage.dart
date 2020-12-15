@@ -185,7 +185,13 @@ class _ProductPageState extends State<ProductPage> {
                                     SizedBox(height: 10,),
                                     InkWell(
                                       onTap: () async{
-                                        await setCartData(context,widget.product,quantity);
+
+                                        Navigator.push(context, MaterialPageRoute(
+                                            builder: (context) => CartShell()));
+                                        await  setCartData(context,widget.product,quantity);
+                                        Navigator.pop(context);
+
+
                                         Fluttertoast.showToast(msg: "Product added to cart");
 
                                       },

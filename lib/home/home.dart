@@ -65,7 +65,7 @@ class _HomeState extends State<Home> {
                   icon: Icon(Icons.notifications),
                   onPressed: (){
                     Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => false?ComingSoon("Notifications"):ScanPage()));
+                        builder: (context) => true?ComingSoon("Notifications"):ScanPage()));
 
                   },
                 ),

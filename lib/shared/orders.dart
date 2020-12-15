@@ -27,7 +27,7 @@ class OrderTable extends StatelessWidget {
         },
         children: [
           TableRow(
-              children: ["product name", "quantity" ,"price"].map((input) => TextOverFlow(input)).toList()
+              children: ["Product name", "quantity" ,"price"].map((input) => TextOverFlow(input)).toList()
           ),
           ...CartItems.map((e) =>TableRow(
               children: [e.name, e.quantity, e.myprice].map((input) => TextOverFlow(input)).toList()

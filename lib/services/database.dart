@@ -11,6 +11,10 @@ class DatabaseService{
  final CollectionReference todaysHot = FirebaseFirestore.instance.collection("todaysHot") ;
  final CollectionReference Userdata = FirebaseFirestore.instance.collection("Userdata");
  final CollectionReference Orderdata = FirebaseFirestore.instance.collection("Order") ;
+ final CollectionReference DeliveryBoys = FirebaseFirestore.instance.collection("Boys") ;
+ final CollectionReference Admin = FirebaseFirestore.instance.collection("Admin") ;
+ final CollectionReference AdminOrders = FirebaseFirestore.instance.collection("AdminOrder") ;
+
 
 
  Stream<QuerySnapshot> get nothing{

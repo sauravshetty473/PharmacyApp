@@ -10,6 +10,7 @@ import 'package:shavishank/shared/textformfield.dart';
 typedef void StringCallback(String id);
 
 class NamePhone extends StatefulWidget {
+
   NamePage newclass;
   final ValueChanged<NamePage> setprevious;                 //Very important , something new , calling function of parent from child             // callback maybe?
   NamePhone({this.newclass,this.setprevious});
@@ -19,6 +20,7 @@ class NamePhone extends StatefulWidget {
 }
 
 class _NamePhoneState extends State<NamePhone> {
+  final _formKey = GlobalKey<FormState>();
 
   String NPY = "";
 
@@ -132,123 +134,139 @@ class _NamePhoneState extends State<NamePhone> {
 
 
 
+    return Form(
+      key: this._formKey,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor:  Color.fromARGB(255,78,100,123),
+          elevation: 0,
+        ),
 
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(color:  Color.fromARGB(255,78,100,123),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
 
-
-
-
-
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor:  Color.fromARGB(255,78,100,123),
-        elevation: 0,
-      ),
-
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(color:  Color.fromARGB(255,78,100,123),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-
-                        children: [
-                          Gender(male: true,imageURL:"assets/images/male.png"),
-                          Gender(male: false,imageURL:"assets/images/female.png"),
-                        ],
+                          children: [
+                            Gender(male: true,imageURL:"assets/images/male.png"),
+                            Gender(male: false,imageURL:"assets/images/female.png"),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                        FlipkartTextField(
+                          onSonChanged: (String newId) {
+                            setState(() {
+                              this.firstname = newId??this.firstname;
+                              widget.newclass.firstname = this.firstname;
+
+                            });
+                           },
+                        hintext: "First Name",
+                          initialvalue: firstname==""?null:firstname,
+                        duration: 200,
+                        shrinkpad: 10,
+                        expandpad: 25,
+                        shrinksize: 10,
+                        expandsize: 15,
+                          validator: (String val){
+                            if(val.isEmpty){
+                              return "Enter your first name";
+                            }
+                            return null;
+                          },
+                      ),
+                      SizedBox(height: 10,),
+
+                      FlipkartTextField(
+                        onSonChanged: (String newId) {
+                         setState(() {
+                           this.lastname = newId??this.lastname;
+                           widget.newclass.lastname = this.lastname;
+
+                         });
+                        },
+                        hintext: "Last Name",
+                        initialvalue: lastname==""?null:lastname,
+                        duration: 200,
+                        shrinkpad: 10,
+                        expandpad: 25,
+                        shrinksize: 10,
+                        expandsize: 15,
+                        validator: (String val){
+                          if(val.isEmpty){
+                            return "Enter your last name";
+                          }
+                          return null;
+                        },
+                      ),
+
+                      SizedBox(height: 10,),
+
                       FlipkartTextField(
                         onSonChanged: (String newId) {
                           setState(() {
-                            this.firstname = newId??this.firstname;
-                            widget.newclass.firstname = this.firstname;
-
+                            this.phonenumber = newId??this.phonenumber;
+                            widget.newclass.phonenumber = this.phonenumber;
                           });
-                         },
-                      hintext: "First Name",
-                        initialvalue: firstname==""?null:firstname,
-                      duration: 200,
-                      shrinkpad: 10,
-                      expandpad: 25,
-                      shrinksize: 10,
-                      expandsize: 15,
-                    ),
-                    SizedBox(height: 10,),
-
-                    FlipkartTextField(
-                      onSonChanged: (String newId) {
-                       setState(() {
-                         this.lastname = newId??this.lastname;
-                         widget.newclass.lastname = this.lastname;
-
-                       });
-                      },
-                      hintext: "Last Name",
-                      initialvalue: lastname==""?null:lastname,
-                      duration: 200,
-                      shrinkpad: 10,
-                      expandpad: 25,
-                      shrinksize: 10,
-                      expandsize: 15,
-                    ),
-
-                    SizedBox(height: 10,),
-
-                    FlipkartTextField(
-                      onSonChanged: (String newId) {
-                        setState(() {
-                          this.phonenumber = newId??this.phonenumber;
-                          widget.newclass.phonenumber = this.phonenumber;
-
-                        });
-                      },
-                      initialvalue: phonenumber==""?null:phonenumber,
-                      hintext: "Phone Number",
-                      duration: 200,
-                      shrinkpad: 10,
-                      expandpad: 25,
-                      shrinksize: 10,
-                      expandsize: 15,
-                      number: true,
-                    ),
-                    SizedBox(height: 20,),
-
-                    FlatButton(
-                      child: Text("SUBMIT",
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.blue
-                        ),
+                        },
+                        initialvalue: phonenumber==""?null:phonenumber,
+                        hintext: "Phone Number",
+                        duration: 200,
+                        shrinkpad: 10,
+                        expandpad: 25,
+                        shrinksize: 10,
+                        expandsize: 15,
+                        number: true,
+                        validator: (String val){
+                          if(val.isEmpty){
+                            return "Enter your phone number";
+                          }
+                          return null;
+                        },
                       ),
-                      onPressed: () async{
-                        Navigator.push(context, MaterialPageRoute(
-                            builder: (context) => Loading()));
-                        await savedata();
-                        widget.newclass.ismale = this._ismale;
-                        Navigator.pop(context);
-                        widget.setprevious(widget.newclass);
-                        Navigator.pop(context);
-                        Fluttertoast.showToast(msg: "Profile updated successfully");
-                      },
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        )
+                      SizedBox(height: 20,),
+
+                      FlatButton(
+                        child: Text("SUBMIT",
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.blue
+                          ),
+                        ),
+                        onPressed: () async{
+                          if(_formKey.currentState.validate()){
+                            Navigator.push(context, MaterialPageRoute(
+                                builder: (context) => Loading()));
+                            await savedata();
+                            widget.newclass.ismale = this._ismale;
+                            Navigator.pop(context);
+                            widget.setprevious(widget.newclass);
+                            Navigator.pop(context);
+                            Fluttertoast.showToast(msg: "Profile updated successfully");
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          )
+      ),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shavishank/specialaccess/assigndelivery.dart';
 import 'package:shavishank/specialaccess/inspectitem.dart';
+import 'package:shavishank/specialaccess/mydelivery.dart';
 import 'package:shavishank/specialaccess/orderdelivery.dart';
 
 //change quantities of products, pricing, delete, add. //hand over deliveries to delivery boy         //shavishank main
@@ -13,10 +14,11 @@ class SpecialAccess extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.black),
-        backgroundColor: Colors.white,
+        elevation: 0,
+        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor:  Color.fromARGB(255,78,100,123),
         title: Text("Special Access" ,style: TextStyle(
-            color: Colors.black
+            color: Colors.white
         ),),
       ),
 
@@ -31,8 +33,9 @@ class SpecialAccess extends StatelessWidget {
           ),
 
           children: [
-            SACards(title: "Inspect items", subinfo: "Change product details", pushwidget: InspectItem(),),
-            SACards(title: "Orders & Delivery", subinfo: "Assign orders to a delivery boy", pushwidget: OrderAndDelivery())
+            SACards(title: "Inspect items", subinfo: "Update product details", pushwidget: InspectItem(),),
+            SACards(title: "Orders & Delivery", subinfo: "Assign orders to a delivery boy", pushwidget: OrderAndDelivery()),
+            SACards(title: "My Delivery", subinfo: "Deliveries assigned to me", pushwidget: MyDelivery(admin: true,),)
           ],
         ),
       ),
