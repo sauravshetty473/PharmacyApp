@@ -1,4 +1,4 @@
-package com.example.shavishank
+package valfirestudios.shavishank
 
 import io.flutter.embedding.android.FlutterActivity
 
