@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shavishank/login/loginstartpage.dart';
+import 'package:shavishank/messaging/chatroom.dart';
 import 'package:shavishank/models/user.dart';
 import 'package:shavishank/services/database.dart';
 import 'home/home.dart';
@@ -24,5 +25,6 @@ class Wrapper extends StatelessWidget  {
     }
 
     return user==null?LoginInfoSlideView():Home();                              //at start either Exposition or the Home page //not Authenticate directly
+    //return user==null?LoginInfoSlideView():ChatRoomCover();
   }
 }

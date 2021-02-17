@@ -14,6 +14,11 @@ class DatabaseService{
  final CollectionReference DeliveryBoys = FirebaseFirestore.instance.collection("Boys") ;
  final CollectionReference Admin = FirebaseFirestore.instance.collection("Admin") ;
  final CollectionReference AdminOrders = FirebaseFirestore.instance.collection("AdminOrder") ;
+ final CollectionReference Chats = FirebaseFirestore.instance.collection("Chats") ;
+ final CollectionReference Requested = FirebaseFirestore.instance.collection("Requested") ;
+ final CollectionReference Active = FirebaseFirestore.instance.collection("Active") ;
+
+
 
 
 
@@ -46,7 +51,6 @@ class Product{                       //this is my own class // i will store the 
    id = e.id;
   }
   else{
-
 
   }
  }
