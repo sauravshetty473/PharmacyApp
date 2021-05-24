@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-# PharmacyApp
-Shavishank Pharmacy App(First freelancing)
-=======
-# shavishank
+# Shavishank Pharmacy App
 
 A new Flutter application.
 
