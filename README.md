@@ -2,6 +2,9 @@
 
 A new Flutter application.
 
+The android app can be downloaded from here
+https://play.google.com/store/apps/details?id=valfirestudios.shavishank
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
