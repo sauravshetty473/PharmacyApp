@@ -46,7 +46,7 @@ class _PaymentState extends State<Payment> {
 
   void openCheckout(){
     var options = {
-      "key" : "rzp_test_56L0tYqVwqLbA1",
+      "key" : "Your_key_goes_here",         //payment gateway key
       "amount" : int.parse(widget.amount)*100,
       "name"  : "Payment",
       "description" : "payment for the products",
